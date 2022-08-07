@@ -10,7 +10,7 @@ import Post from '../../components/Post/Post';
 class Home extends React.Component {
 
     state = {
-        userInfo: {},
+        userInfo: this.props.userInfo,
         posts: []
     }
 
@@ -21,20 +21,6 @@ class Home extends React.Component {
 
 
     componentDidMount() {
-        axios.get("http://localhost:8080/users/profile", {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
-        }).then((res) => {
-            console.log("i got data back from server")
-
-            this.setState({
-                isLoading: false,
-                userInfo: res.data
-            })
-            this.props.setUser(res.data);
-        });
-
         axios.get("http://localhost:8080/posts").then((data) => {
             this.setState({
                 posts: data.data
@@ -118,17 +104,13 @@ class Home extends React.Component {
                     <div className='posts-feed-container'>
                         {this.state.posts.map((post) => {
                             return (
-
-                                // <div className='post'>
-                                //     <p>User: {post.user_id}</p>
-                                //     <p>Sport: {post.sport}</p>
-                                //     <p>Notes: {post.notes}</p>
-                                // </div>
                                 <Post
+                                    onViewPostPage={true}
                                     user_id={post.user_id}
                                     chat_id={post.chat_id}
                                     sport={post.sport}
                                     notes={post.notes}
+                                    current_user_id={this.state.userInfo.id}
                                 />
                             );
 

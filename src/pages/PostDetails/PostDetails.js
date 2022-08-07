@@ -1,7 +1,7 @@
 import axios from "axios";
 import React from "react";
 import { v4 as uid } from 'uuid';
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import Post from "../../components/Post/Post";
@@ -9,7 +9,7 @@ import Post from "../../components/Post/Post";
 const baseUrl = "http://localhost:8080";
 const profileUrl = `${baseUrl}/users/profile`;
 
-const socket = io.connect("http://localhost:8080");
+// const socket = io.connect("http://localhost:8080");
 
 
 
@@ -24,34 +24,34 @@ class PostDetails extends React.Component {
 
     // ---------- socket io stuff below ---------------------------
 
-    joinRoom = (joinObj) => {
-        if (joinObj.room !== "") {
-            socket.emit("join_room", {
-                user: joinObj.user,
-                room: joinObj.room
-            }
-            );
-        }
-    }
+    // joinRoom = (joinObj) => {
+    //     if (joinObj.room !== "") {
+    //         socket.emit("join_room", {
+    //             user: joinObj.user,
+    //             room: joinObj.room
+    //         }
+    //         );
+    //     }
+    // }
 
-    logTest = () => {
-        console.log("hi")
-    }
+    // logTest = () => {
+    //     console.log("hi")
+    // }
 
-    sendMessage = (message) => {
-        socket.emit("send_message", {
-            message: message,
-            room: this.state.room
-        });
-    }
+    // sendMessage = (messageObj) => {
+    //     socket.emit("send_message", {
+    //         message: messageObj.message,
+    //         room: messageObj.room
+    //     });
+    // }
 
-    componentDidUpdate() {
-        socket.on("receive_message", (data) => {
-            this.setState({
-                message: data.message
-            });
-        })
-    }
+    // componentDidUpdate() {
+    //     socket.on("receive_message", (data) => {
+    //         this.setState({
+    //             message: data.message
+    //         });
+    //     })
+    // }
 
     // ---------------------------------------------------------------
 
@@ -92,10 +92,6 @@ class PostDetails extends React.Component {
             room: this.state.post.chat_id,
         });
 
-        this.joinRoom();
-
-
-
         this.props.routerProps.history.push(`/chat/${this.state.room}`);
     }
 
@@ -120,7 +116,8 @@ class PostDetails extends React.Component {
                             chat_id={this.state.post.chat_id}
                             sport={this.state.post.sport}
                             notes={this.state.post.notes}
-                            user_id={this.state.post.user_id}
+                            user_post_id={this.state.post.user_id}
+                            current_user_id={this.state.userInfo.id}
                         />
                         <h1>Press post to join group!</h1>
                     </div>

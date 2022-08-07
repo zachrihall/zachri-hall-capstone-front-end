@@ -11,6 +11,7 @@ import Home from './pages/Home/Home';
 import Chat from './pages/Chat/Chat';
 import PostDetails from './pages/PostDetails/PostDetails';
 
+
 const BASE_URL = "http://localhost:8080";
 const signupUrl = `${BASE_URL}/users/signup`;
 const loginUrl = `${BASE_URL}/users/login`;
@@ -138,16 +139,15 @@ class App extends React.Component {
 
   componentDidMount() {
     console.log("i mounted")
-    // axios.get("http://localhost:8080/users/profile", {
-    //   headers: {
-    //     Authorization: `Bearer ${localStorage.getItem("token")}`
-    //   }
-    // }).then((res) => {
-    //   this.setState({
-    //     userInfo: res.data
-    //   })
-    // });
-
+    axios.get("http://localhost:8080/users/profile", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      }
+    }).then((res) => {
+      this.setState({
+        userInfo: res.data
+      })
+    });
   }
 
   componentDidUpdate(_prevProps, prevState) {
@@ -177,7 +177,8 @@ class App extends React.Component {
                 return (
                   <Profile
                     signOutHandler={this.signOutHandler}
-                    setUser={this.setUserInfo}
+                    // setUser={this.setUserInfo}
+                    userInfo={this.state.userInfo}
                     routerProps={routerProps}
                   />
                 );
@@ -191,9 +192,12 @@ class App extends React.Component {
                 );
               }} />
 
-              <Route path="/chat" render={(routerProps) => {
+              <Route path="/chat/:id" render={(routerProps) => {
                 return (
-                  <Chat />
+                  <Chat 
+                  routerProps={routerProps}
+                  userId={this.state.userInfo.id}
+                  />
                 );
               }} />
 
@@ -202,15 +206,10 @@ class App extends React.Component {
                   <Home
                     setUser={this.setUserInfo}
                     routerProps={routerProps}
+                    userInfo={this.state.userInfo}
                   />
                 );
               }} />
-
-
-
-
-
-
 
             </Switch>
           </Router>

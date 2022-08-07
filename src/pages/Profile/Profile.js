@@ -12,7 +12,7 @@ const profileUrl = `${baseUrl}/users/profile`;
 class Profile extends Component {
     state = {
         isLoading: true,
-        userInfo: "",
+        userInfo: this.props.userInfo,
         userPosts: []
     };
 
@@ -20,22 +20,11 @@ class Profile extends Component {
 
 
     async componentDidMount() {
-        const userInfoRes = await axios.get(profileUrl, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
-        })
-
-
-        await this.promisedSetState({
-            isLoading: false,
-            userInfo: userInfoRes.data
-        });
-
         const userPostsRes = await axios.get(`${baseUrl}/posts/${this.state.userInfo.id}`);
 
         await this.promisedSetState({
-            userPosts: userPostsRes.data
+            userPosts: userPostsRes.data,
+            isLoading: false
         });
     }
 
@@ -57,18 +46,13 @@ class Profile extends Component {
                     <div>
                         {this.state.userPosts.map((post) => {
                             return (
-                                // <Link className="post-link" to={`post/${post.chat_id}`}
-                                // ><div className='post'>
-                                //         <p>Sport: {post.sport}</p>
-                                //         <p>Notes: {post.notes}</p>
-                                //     </div>
-                                // </Link>
-
                                 <Post
-                                    profile="true"
+                                    onViewPostPage={true}
+                                    profile={true}
                                     chat_id={post.chat_id}
                                     sport={post.sport}
                                     notes={post.notes}
+                                    current_user_id={this.state.userInfo.id}
                                 />
                             );
                         })}
