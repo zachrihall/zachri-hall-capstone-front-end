@@ -1,34 +1,71 @@
 import io from 'socket.io-client';
 import React from "react";
 
-// promisedSetState = (newState) => new Promise(resolve => this.setState(newState, resolve));
+
+
 
 
 class Chat extends React.Component {
 
-    state = {
-
-    }
-
     socket = io.connect("http://localhost:8080");
 
+    // this.socket.on("receive_message", (data) => {
+    //     this.setState({
+    //         message: data
+    //     })
+    //     console.log(data);
+    // })
 
-    componentDidMount() {
-        // const joinRoom = () => {
-        //     if (room !== "") {
-        //         socket.emit("join_room", room);
-        //     }
-        // }
-        console.log(this.props)
 
+    promisedSetState = (newState) => {
+        new Promise(resolve => this.setState(newState, resolve))
+    };
+
+
+    state = {
+        chatId: this.props.routerProps.match.params.id,
+        userId: this.props.userId,
+        message: {}
+    }
+
+
+    getMessage = (message) => {
+  
+    }
+
+    joinRoom = () => {
+        const roomObj = {
+            userId: this.state.userId,
+            room: this.state.chatId
+        }
+
+        if (this.state.chatId !== "") {
+            this.socket.emit("join_room", roomObj);
+        }
+    }
+
+    sendMessage = (e) => {
+        e.preventDefault();
+
+        const messageObj = {
+            userId: this.state.userId,
+            message: e.target.input.value,
+            room: this.state.chatId
+        }
+
+        this.socket.emit("send_message", messageObj);
     }
 
 
     render() {
         return (
             <div className="App">
-                <input name="input" placeholder='Message...' />
-                {/* <button onClick={() => sendMessage({ message: "hi", room: this.chatId })}>Send</button> */}
+                <form onSubmit={(e) => this.sendMessage(e)}>
+                    <label htmlFor="input">Enter Message: </label>
+                    <input name="input" placeholder='Message...' />
+
+                    <button>Send</button>
+                </form>
             </div>
         );
     }

@@ -138,16 +138,20 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    console.log("i mounted")
-    axios.get("http://localhost:8080/users/profile", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`
-      }
-    }).then((res) => {
-      this.setState({
-        userInfo: res.data
-      })
-    });
+    if (localStorage.getItem("token")) {
+      console.log("i mounted")
+      axios.get("http://localhost:8080/users/profile", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
+      }).then((res) => {
+        console.log(res.data[0])
+        this.setState({
+          userInfo: res.data[0]
+        })
+      });
+    }
+
   }
 
   componentDidUpdate(_prevProps, prevState) {
@@ -194,9 +198,9 @@ class App extends React.Component {
 
               <Route path="/chat/:id" render={(routerProps) => {
                 return (
-                  <Chat 
-                  routerProps={routerProps}
-                  userId={this.state.userInfo.id}
+                  <Chat
+                    routerProps={routerProps}
+                    userId={this.state.userInfo.id}
                   />
                 );
               }} />
@@ -206,7 +210,7 @@ class App extends React.Component {
                   <Home
                     setUser={this.setUserInfo}
                     routerProps={routerProps}
-                    userInfo={this.state.userInfo}
+                    userId={this.state.userInfo.id}
                   />
                 );
               }} />

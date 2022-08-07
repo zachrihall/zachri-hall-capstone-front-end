@@ -85,7 +85,7 @@ class PostDetails extends React.Component {
             user_id: this.state.userInfo.id
         }
 
-        const createChatRes = await axios.post("http://localhost:8080/chats/add", chatRoomBody);
+        const createChatRes = await axios.post("http://localhost:8080/chats/add/rel", chatRoomBody);
         console.log(createChatRes);
 
         await this.promisedSetState({

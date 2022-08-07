@@ -40,7 +40,7 @@ function Post(props) {
                     <p>Sport: {props.sport}</p>
                     <p>Notes: {props.notes}</p>
                     <Link className="post-link" to={`/post/${props.chat_id}`}>
-                        <button onClick={() => addChatToUser()}>View Post</button>
+                        <button>View Post</button>
                     </Link>
                 </div>
             </div>

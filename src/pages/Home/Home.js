@@ -4,7 +4,8 @@ import axios from 'axios';
 import { v4 as uid } from 'uuid';
 import Post from '../../components/Post/Post';
 
-
+const baseUrl = "http://localhost:8080";
+const profileUrl = `${baseUrl}/users/profile`;
 
 
 class Home extends React.Component {
@@ -19,25 +20,49 @@ class Home extends React.Component {
         long: -80.383681
     }
 
+    promisedSetState = (newState) => new Promise(resolve => this.setState(newState, resolve));
 
-    componentDidMount() {
-        axios.get("http://localhost:8080/posts").then((data) => {
-            this.setState({
-                posts: data.data
-            });
+    async componentDidMount() {
+        const userInfo = await axios.get("http://localhost:8080/users/profile", {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
         })
+
+        const userPostsRes = await axios.get(`${baseUrl}/posts`);
+
+        await this.promisedSetState({
+            userInfo: userInfo.data[0],
+            posts: userPostsRes.data,
+            isLoading: false
+        });
 
     }
 
     componentDidUpdate(_prevProps, prevState) {
         if (!prevState === this.state) {
-            axios.get("http://localhost:8080/posts").then((data) => {
+            axios.get("http://localhost:8080/users/profile", {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
+                }
+            }).then((res) => {
+                console.log(res.data[0]);
                 this.setState({
-                    posts: data.data
-                });
-            })
+                    userInfo: res.data[0]
+                })
+            });
         }
     }
+
+    // componentDidUpdate(_prevProps, prevState) {
+    //     if (!prevState === this.state) {
+    //         axios.get("http://localhost:8080/posts").then((data) => {
+    //             this.setState({
+    //                 posts: data.data
+    //             });
+    //         })
+    //     }
+    // }
 
     postSubmitHandler = (e) => {
         // e.preventDefault();
@@ -66,6 +91,8 @@ class Home extends React.Component {
         const addPostReq = axios.post(addPostEndPoint, post_body);
         const getPostsReq = axios.get(getPostsEndPoint);
         const addChatReq = axios.post(addChatEndpoint, chatRoomBody);
+
+        console.log(chatRoomBody)
 
         axios.all([addPostReq, getPostsReq, addChatReq]).then(
             axios.spread((...responses) => {

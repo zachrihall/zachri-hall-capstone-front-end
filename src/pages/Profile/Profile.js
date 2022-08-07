@@ -20,12 +20,35 @@ class Profile extends Component {
 
 
     async componentDidMount() {
-        const userPostsRes = await axios.get(`${baseUrl}/posts/${this.state.userInfo.id}`);
+        const userInfo = await axios.get("http://localhost:8080/users/profile", {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+        })
+
+        const userPostsRes = await axios.get(`${baseUrl}/posts/${userInfo.data[0].id}`);
 
         await this.promisedSetState({
+            userInfo: userInfo.data[0],
             userPosts: userPostsRes.data,
             isLoading: false
         });
+
+    }
+
+    componentDidUpdate(_prevProps, prevState) {
+        if (!prevState === this.state) {
+            axios.get("http://localhost:8080/users/profile", {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
+                }
+            }).then((res) => {
+                console.log(res.data[0]);
+                this.setState({
+                    userInfo: res.data[0]
+                })
+            });
+        }
     }
 
 
