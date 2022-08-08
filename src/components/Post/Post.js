@@ -4,6 +4,8 @@ import axios from 'axios';
 import Chat from '../../pages/Chat/Chat';
 import React from 'react';
 
+const BASE_URL = "http://" + document.location.hostname + ":8080";
+
 function Post(props) {
     const addChatToUser = () => {
         const chatRoomBody = {
@@ -12,7 +14,7 @@ function Post(props) {
             user_id: props.current_user_id
         }
 
-        axios.post("http://localhost:8080/chats/add", chatRoomBody);
+        axios.post(BASE_URL + "chats/add", chatRoomBody);
     }
 
     // // const FancyLink = React.forwardRef((props, ref) => (<a ref={ref}>{props.children}</a>))
@@ -27,8 +29,9 @@ function Post(props) {
                 <div className="post" >
                     <p>Sport: {props.sport}</p>
                     <p>Notes: {props.notes}</p>
-                    <Link className="post-link" to={`/chat/${props.chat_id}`} render={(routerProps) => { <Chat routerProps="test" /> }}>
-                        <button onClick={() => addChatToUser()}>Join Group</button>
+                    {/* <Link className="post-link" to={`/chat/${props.chat_id}`} render={(routerProps) => { <Chat routerProps={routerProps} /> }}> */}
+                    <Link className="post-link" to={`/chat/${props.chat_id}`}>
+                        <button onClick={() => addChatToUser()}>Join Chat Room</button>
                     </Link>
                 </div>
             </div>
@@ -39,6 +42,7 @@ function Post(props) {
                 <div className="post" >
                     <p>Sport: {props.sport}</p>
                     <p>Notes: {props.notes}</p>
+                    <p>{props.distanceAway > 1 ? (`${props.distanceAway} miles`): (`${props.distanceAway} mile`)} away</p>
                     <Link className="post-link" to={`/post/${props.chat_id}`}>
                         <button>View Post</button>
                     </Link>

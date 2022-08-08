@@ -10,13 +10,50 @@ import Login from './pages/Login/Login';
 import Home from './pages/Home/Home';
 import Chat from './pages/Chat/Chat';
 import PostDetails from './pages/PostDetails/PostDetails';
+import io from 'socket.io-client';
 
+// const Socket = io.connect("http://localhost:8080");
 
-const BASE_URL = "http://localhost:8080";
+// Socket.on("receive_message", (data) => {
+//   console.log("received: ", data);
+//   // setMessageReceived(data);
+//   // console.log("received: ", data.message);
+//   // this.setState({
+//   //     message: data
+//   // })
+// })
+
+// let Socket;
+
+// if (window.location.pathname.includes("/chat/")) {
+//   Socket = io.connect("http://localhost:8080");
+
+//   console.log("from app.js --- time to connect socket")
+// }
+// console.log("from app.js: ", window.location.pathname)
+
+// const BASE_URL = "http://localhost:8080";
+const BASE_URL = "http://" + document.location.hostname + ":8080";
+
 const signupUrl = `${BASE_URL}/users/signup`;
 const loginUrl = `${BASE_URL}/users/login`;
 
 class App extends React.Component {
+  constructor(...args) {
+    super(...args);
+
+
+    // Socket.on("receive_message", (data) => {
+    //   console.log("received: ", data);
+    //   // setMessageReceived(data);
+    //   // console.log("received: ", data.message);
+    //   // this.setState({
+    //   //     message: data
+    //   // })
+    // })
+
+
+  }
 
   state = {
     isSignedUp: false,
@@ -27,11 +64,13 @@ class App extends React.Component {
   }
 
 
+
   // ---------------- Handlers for Auth --------------------------
 
 
   handleLogin = (e) => {
     e.preventDefault();
+    console.log(BASE_URL);
 
     axios.post(loginUrl, {
       username: e.target.username.value,
@@ -140,7 +179,7 @@ class App extends React.Component {
   componentDidMount() {
     if (localStorage.getItem("token")) {
       console.log("i mounted")
-      axios.get("http://localhost:8080/users/profile", {
+      axios.get(BASE_URL + "/users/profile", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`
         }
@@ -157,7 +196,7 @@ class App extends React.Component {
   componentDidUpdate(_prevProps, prevState) {
     if (!prevState === this.state) {
       console.log("i updated")
-      axios.get("http://localhost:8080/users/profile", {
+      axios.get(BASE_URL + "/users/profile", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`
         }
@@ -199,6 +238,7 @@ class App extends React.Component {
               <Route path="/chat/:id" render={(routerProps) => {
                 return (
                   <Chat
+                    // socket={Socket}
                     routerProps={routerProps}
                     userId={this.state.userInfo.id}
                   />

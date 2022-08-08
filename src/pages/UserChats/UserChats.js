@@ -1,7 +1,6 @@
-import './Profile.scss';
+import './UserChats.scss';
 import axios from "axios";
 import { Component } from "react";
-import { Link } from 'react-router-dom';
 import Post from '../../components/Post/Post';
 
 const BASE_URL = "http://" + document.location.hostname + ":8080";

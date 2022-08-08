@@ -6,8 +6,8 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import Post from "../../components/Post/Post";
 
-const baseUrl = "http://localhost:8080";
-const profileUrl = `${baseUrl}/users/profile`;
+const BASE_URL = "http://" + document.location.hostname + ":8080";
+const profileUrl = `${BASE_URL}/users/profile`;
 
 // const socket = io.connect("http://localhost:8080");
 
@@ -60,7 +60,7 @@ class PostDetails extends React.Component {
 
 
     async componentDidMount() {
-        const postRes = await axios.get(`http://localhost:8080/posts/chat/${this.postId}`);
+        const postRes = await axios.get(`${BASE_URL}/posts/chat/${this.postId}`);
         this.setState({
             post: postRes.data[0]
         });
@@ -85,8 +85,7 @@ class PostDetails extends React.Component {
             user_id: this.state.userInfo.id
         }
 
-        const createChatRes = await axios.post("http://localhost:8080/chats/add/rel", chatRoomBody);
-        console.log(createChatRes);
+        const createChatRes = await axios.post(BASE_URL + "/chats/add/rel", chatRoomBody);
 
         await this.promisedSetState({
             room: this.state.post.chat_id,

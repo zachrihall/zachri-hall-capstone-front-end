@@ -1,87 +1,175 @@
-import io from 'socket.io-client';
-import React from "react";
+import axios from 'axios';
+import React from 'react';
+import io, { connect } from 'socket.io-client';
+import Profile from '../Profile/Profile';
 
 
-
-
+const BASE_URL = "http://" + document.location.hostname + ":8080";
 
 class Chat extends React.Component {
+    constructor(...args) {
+        super(...args);
 
-    socket = io.connect("http://localhost:8080");
+        this.socket = io.connect(BASE_URL);
 
-    // this.socket.on("receive_message", (data) => {
-    //     this.setState({
-    //         message: data
-    //     })
-    //     console.log(data);
-    // })
+        console.log(this.socket.connected);
 
+        console.log("from app.js --- time to connect socket")
+
+        this.socket.on("receive_message", (data) => {
+            const messagesContainer = document.querySelector(".messages-container");
+            const newMessage = document.createElement("p");
+            newMessage.innerText = data;
+            messagesContainer.appendChild(newMessage);
+            console.log("received: ", data);
+            // let newMessage = document.createElement('p');
+            // newMessage.innerText = "data";
+
+
+
+            // setMessageReceived(data);
+            // console.log("received: ", data.message);
+            // this.setState({
+            //     message: data
+            // })
+        })
+
+        this.socket.on("left_room", () => {
+            this.setState({
+                leftPreviousRoom: "success"
+            });
+        })
+    }
+
+    state = {
+        chatId: this.props.routerProps.match.params.id,
+        userId: 0,
+        message: '',
+        leftPreviousRoom: ''
+    }
 
     promisedSetState = (newState) => {
         new Promise(resolve => this.setState(newState, resolve))
     };
 
 
-    state = {
-        chatId: this.props.routerProps.match.params.id,
-        userId: this.props.userId,
-        message: {}
+
+
+    async componentDidMount() {
+        const userInfo = await axios.get(BASE_URL + "/users/profile", {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+        })
+
+        console.log("response data id: ", userInfo.data[0].id);
+
+        await this.promisedSetState({
+            userId: userInfo.data[0].id
+        })
+
+
+
+        // await this.leaveChatRoom();
+        await this.joinChatRoom();
+        console.log("user id is: ", this.state.userId);
     }
 
 
-    getMessage = (message) => {
-  
+    componentDidUpdate(_prevProps, prevState) {
+        if (!prevState === this.state) {
+            this.leaveChatRoom();
+            this.joinChatRoom();
+
+
+            this.setState({
+                leftPreviousRoom: true
+            })
+        }
+
+        // this.socket.on("receive_message", (data) => {
+        //     console.log("received: ", data);
+        //     // setMessageReceived(data);
+        //     // console.log("received: ", data.message);
+        //     // this.setState({
+        //     //     message: data
+        //     // })
+        // })
     }
 
-    joinRoom = () => {
-        const roomObj = {
-            userId: this.state.userId,
-            room: this.state.chatId
-        }
-
-        if (this.state.chatId !== "") {
-            this.socket.emit("join_room", roomObj);
-        }
+    componentWillUnmount() {
+        this.socket.disconnect();
     }
 
-    sendMessage = (e) => {
-        e.preventDefault();
+    // connect = () => {
+    //     this.socket.on("connection", () => {
+    //         console.log(this.socket.connection)
+    //     })
+    // }
 
-        const messageObj = {
-            userId: this.state.userId,
-            message: e.target.input.value,
-            room: this.state.chatId
-        }
+    // leftRoomListener = () => {
+    //     this.socket.on("left_room", () => {
+    //         this.setState({
+    //             leftPreviousRoom: "success"
+    //         });
+    //     })
+    // }
 
+    sendMessage = (messageObj) => {
         this.socket.emit("send_message", messageObj);
     }
+
+    joinChatRoom = () => {
+        console.log("+ joining chat room: ", this.state.chatId)
+        if (this.socket) {
+            this.socket.emit("join_room", {
+                userId: this.state.userId,
+                room: this.state.chatId, 
+                socketId: this.socket.id
+            });
+        }
+
+    }
+
+    leaveChatRoom = () => {
+        this.socket.emit("leave_room");
+        console.log("- leaving chat room")
+    }
+
+    submitHandler = (e) => {
+        e.preventDefault();
+
+        // this.state.joinChatRoom({ userId: this.state.userId, room: this.state.chatId, inRoom: true })
+
+        const messageObj = {
+            message: e.target.input.value,
+            userId: this.state.userId,
+            chatId: this.state.chatId,
+            fromSocket: this.socket.id
+        }
+
+        this.sendMessage(messageObj);
+    }
+
+
+
 
 
     render() {
         return (
-            <div className="App">
-                <form onSubmit={(e) => this.sendMessage(e)}>
-                    <label htmlFor="input">Enter Message: </label>
-                    <input name="input" placeholder='Message...' />
-
-                    <button>Send</button>
+            <div className="App" >
+                <form onSubmit={(e) => { this.submitHandler(e) }}>
+                    <input placeholder='Message...' name="input" />
+                    <button>Send message</button>
+                    <h1>Messages: </h1>
                 </form>
+                <div className="messages-container"></div>
+
+
             </div>
         );
     }
-
 }
-
-
-// function Chat(props) {
-//     return (
-//         <div className="App">
-//             <input name="input" placeholder='Message...' />
-//             <button onClick={() => {props.sendMessage("hello")}}>Send message</button>
-//             <h1>Message: </h1>
-//         </div>
-//     );
-// }
 
 export default Chat;
 

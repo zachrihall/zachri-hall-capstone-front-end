@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-const BASE_URL = "http://localhost:8080";
+const BASE_URL = "http://" + document.location.hostname + ":8080";
 const signupUrl = `${BASE_URL}/users/signup`;
 
 

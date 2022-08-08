@@ -3,9 +3,11 @@ import './Home.scss';
 import axios from 'axios';
 import { v4 as uid } from 'uuid';
 import Post from '../../components/Post/Post';
+import haversine from 'haversine-distance';
 
-const baseUrl = "http://localhost:8080";
-const profileUrl = `${baseUrl}/users/profile`;
+// const API_KEY = "AIzaSyBp_4LbU532FQe_xpsHGEoVeymH04Jr0nU"
+const BASE_URL = "http://" + document.location.hostname + ":8080";
+const profileUrl = `${BASE_URL}/users/profile`;
 
 
 class Home extends React.Component {
@@ -15,33 +17,40 @@ class Home extends React.Component {
         posts: []
     }
 
+    // 25.790675, -80.126741
+
     geolocation = {
-        lat: 25.562509,
-        long: -80.383681
+        lat: 25.562309,
+        lng: -80.383681
     }
 
     promisedSetState = (newState) => new Promise(resolve => this.setState(newState, resolve));
 
     async componentDidMount() {
-        const userInfo = await axios.get("http://localhost:8080/users/profile", {
+        console.log("log from home page: ", BASE_URL, document.location.hostname)
+        const userInfo = await axios.get(profileUrl, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`
             }
         })
 
-        const userPostsRes = await axios.get(`${baseUrl}/posts`);
+        const postRes = await axios.get(`${BASE_URL}/posts`);
+
+        // const userLocRes = await axios.post(`https://www.googleapis.com/geolocation/v1/geolocate?key=${API_KEY}`);
+        // const userLoc = userLocRes.data.location;
 
         await this.promisedSetState({
             userInfo: userInfo.data[0],
-            posts: userPostsRes.data,
-            isLoading: false
+            posts: postRes.data,
+            isLoading: false,
+            geolocation: this.geolocation
         });
 
     }
 
     componentDidUpdate(_prevProps, prevState) {
         if (!prevState === this.state) {
-            axios.get("http://localhost:8080/users/profile", {
+            axios.get(profileUrl, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`
                 }
@@ -74,7 +83,7 @@ class Home extends React.Component {
             notes: e.target.notes.value,
             user_id: this.state.userInfo.id,
             geo_latitude: this.geolocation.lat,
-            geo_longitude: this.geolocation.long,
+            geo_longitude: this.geolocation.lng,
             chat_id: postAndChatId
         }
 
@@ -84,9 +93,9 @@ class Home extends React.Component {
             user_id: this.state.userInfo.id
         }
 
-        const addChatEndpoint = "http://localhost:8080/chats/add";
-        const addPostEndPoint = "http://localhost:8080/posts";
-        const getPostsEndPoint = "http://localhost:8080/posts";
+        const addChatEndpoint = BASE_URL + "/chats/add";
+        const addPostEndPoint = BASE_URL + "/posts";
+        const getPostsEndPoint = BASE_URL + "/posts";
 
         const addPostReq = axios.post(addPostEndPoint, post_body);
         const getPostsReq = axios.get(getPostsEndPoint);
@@ -130,17 +139,82 @@ class Home extends React.Component {
                     </div>
                     <div className='posts-feed-container'>
                         {this.state.posts.map((post) => {
-                            return (
-                                <Post
-                                    onViewPostPage={true}
-                                    user_id={post.user_id}
-                                    chat_id={post.chat_id}
-                                    sport={post.sport}
-                                    notes={post.notes}
-                                    current_user_id={this.state.userInfo.id}
-                                />
-                            );
 
+                            if(this.state.userInfo.distance_preference && this.state.userInfo.sports_preference){
+                                const postLoc = {
+                                    lat: parseFloat(post.geo_latitude),
+                                    lng: parseFloat(post.geo_longitude)
+                                }
+
+
+                                // const userLoc = {
+                                //     lat: 25.7925627,
+                                //     lng: -80.198654
+                                // }
+
+                                //Logic for only showing posts that are less than or equal miles away from the user
+                                const distance = Math.round((haversine(postLoc, this.state.geolocation)) / 1609.344);
+
+                                if (distance <= this.state.userInfo.distance_preference && (post.sport.toLowerCase() === this.state.userInfo.sports_preference.toLowerCase())) {
+                                    return (
+                                        <Post
+                                            onViewPostPage={true}
+                                            user_id={post.user_id}
+                                            chat_id={post.chat_id}
+                                            sport={post.sport}
+                                            notes={post.notes}
+                                            current_user_id={this.state.userInfo.id}
+                                            distanceAway={distance}
+                                        />
+                                    );
+                                }
+                            }
+                            else if (this.state.userInfo.distance_preference) {
+                                const postLoc = {
+                                    lat: parseFloat(post.geo_latitude),
+                                    lng: parseFloat(post.geo_longitude)
+                                }
+
+                                // const userLoc = {
+                                //     lat: 25.7925627,
+                                //     lng: -80.198654
+                                // }
+                                //Logic for only showing posts that are less than or equal miles away from the user
+
+                                const distance = Math.round((haversine(postLoc, this.state.geolocation)) / 1609.344);
+
+                                if (distance <= this.state.userInfo.distance_preference) {
+                                    return (
+                                        <Post
+                                            onViewPostPage={true}
+                                            user_id={post.user_id}
+                                            chat_id={post.chat_id}
+                                            sport={post.sport}
+                                            notes={post.notes}
+                                            current_user_id={this.state.userInfo.id}
+                                            distanceAway={distance}
+                                        />
+                                    );
+                                }
+                            
+                            
+                            } 
+
+
+                            
+                            
+                            else {
+                                return (
+                                    <Post
+                                        onViewPostPage={true}
+                                        user_id={post.user_id}
+                                        chat_id={post.chat_id}
+                                        sport={post.sport}
+                                        notes={post.notes}
+                                        current_user_id={this.state.userInfo.id}
+                                    />
+                                );
+                            }
                         })}
 
                     </div>
