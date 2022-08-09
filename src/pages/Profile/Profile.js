@@ -51,6 +51,41 @@ class Profile extends Component {
         }
     }
 
+    // prefSubmitHandler = (e) => {
+    //     e.preventDefault();
+
+    //     console.log(document.location.pathname, this.state.userInfo.id);
+
+    //     let sportPrefAllCheck = e.target.sport_choice.value;
+    //     let distAllCheck = e.target.distance.value;
+
+    //     if((e.target.sport_choice.value === "all")){
+    //         sportPrefAllCheck = "all";
+    //     }
+
+    //     if(!e.target.distance.value){
+    //         distAllCheck = null;
+    //     }
+
+    //     const prefObj = {
+    //         userId: this.state.userInfo.id,
+    //         sports_preference: sportPrefAllCheck,
+    //         distance_preference: distAllCheck
+    //     }
+
+    //     if (this.state.userInfo.id) {
+    //         axios.post(`${BASE_URL}/users/preferences`, prefObj)
+    //         .then((res) => {
+    //             console.log("preference response: ", res)
+    //         })
+
+    //         alert("Preferences submitted");
+
+    //     }else{
+    //         alert("please login");
+    //     }
+    // }
+
 
 
     signOutHandler = () => {
@@ -64,9 +99,32 @@ class Profile extends Component {
         if (!isLoading) {
             return (
                 <>
-                    <h1>Welcome {userInfo.username}!</h1>
+                {/* <form onSubmit={(e) => { this.prefSubmitHandler(e) }}>
+                            <label htmlFor='distance'>Enter distance preference: </label>
+                            <input name="distance" type="number" min="1" max="30"></input>
+
+                            <p>Sport preference: </p>
+                            <input className="form-sport" id="basketball" name="sport_choice" type="radio" value="basketball"></input>
+                            <label htmlFor="basketball">Basketball</label>
+
+                            <input className="form-sport" id="Football" name="sport_choice" type="radio" value="Football"></input>
+                            <label htmlFor="Football">Football</label>
+
+                            <input className="form-sport" id="Soccer" name="sport_choice" type="radio" value="Soccer"></input>
+                            <label htmlFor="Soccer">Soccer</label>
+
+                            <input className="form-sport" id="all" name="sport_choice" type="radio" value="all"></input>
+                            <label htmlFor="all">All</label>
+
+                            <button>Submit</button>
+                </form> */}
+                    <h1>Welcome {userInfo.username}!</h1>                 
                     <button onClick={() => { this.signOutHandler() }}>Sign Out</button>
-                    <div>
+                    <h2>My Teams: </h2>
+                    
+                    
+                    
+                    <div className='posts-feed-container'>
                         {this.state.userPosts.map((post) => {
                             return (
                                 <Post

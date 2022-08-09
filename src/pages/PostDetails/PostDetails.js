@@ -118,7 +118,6 @@ class PostDetails extends React.Component {
                             user_post_id={this.state.post.user_id}
                             current_user_id={this.state.userInfo.id}
                         />
-                        <h1>Press post to join group!</h1>
                     </div>
                 </>
             );

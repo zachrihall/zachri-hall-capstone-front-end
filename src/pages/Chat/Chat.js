@@ -55,24 +55,26 @@ class Chat extends React.Component {
 
 
 
-    async componentDidMount() {
-        const userInfo = await axios.get(BASE_URL + "/users/profile", {
+    componentDidMount() {
+        axios.get(BASE_URL + "/users/profile", {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`
             }
+        }).then((data) => {
+            this.joinChatRoom(data.data[0].id);
         })
 
-        console.log("response data id: ", userInfo.data[0].id);
+        // console.log("response data id: ", userInfo.data[0].id);
 
-        await this.promisedSetState({
-            userId: userInfo.data[0].id
-        })
+        // await this.promisedSetState({
+        //     userId: userInfo.data[0].id
+        // })
 
 
 
         // await this.leaveChatRoom();
-        await this.joinChatRoom();
-        console.log("user id is: ", this.state.userId);
+        
+        // console.log("user id is: ", this.state.userId);
     }
 
 
@@ -119,13 +121,13 @@ class Chat extends React.Component {
         this.socket.emit("send_message", messageObj);
     }
 
-    joinChatRoom = () => {
+    joinChatRoom = (userId) => {
         console.log("+ joining chat room: ", this.state.chatId)
         if (this.socket) {
             this.socket.emit("join_room", {
-                userId: this.state.userId,
-                room: this.state.chatId, 
-                socketId: this.socket.id
+                userId: userId,
+                room: this.state.chatId,
+                
             });
         }
 

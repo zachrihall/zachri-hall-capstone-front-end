@@ -4,3 +4,7 @@
 .error {
   color: red;
 }
+
+body {
+  padding-bottom: 4rem;
+}

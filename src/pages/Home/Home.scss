@@ -1,9 +1,365 @@
-.createPostForm{
-    display: flex;
-    flex-direction: column;
+@use '../../styles/partials/_mixins.scss' as *;
+
+* {
+    margin: 0rem;
 }
 
-.post{
-    background-color: beige;
-    margin: 1rem;
+.hero {
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    width: 100vw;
+    background-image: url("../../assets/images/basketball.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+
+    &__link{
+        text-decoration: none;
+    }
+}
+
+
+
+// .hero-flag-football {
+//     padding: 0;
+//     display: flex;
+//     align-items: center;
+//     justify-content: start;
+//     width: 100vw;
+//     background-image: url("../../assets/images/flag-football.jpeg");
+//     background-repeat: no-repeat;
+//     background-size: cover;
+//     position: relative;
+// }
+
+// .hero-basketball {
+//     padding: 0;
+//     display: flex;
+//     align-items: center;
+//     justify-content: start;
+//     width: 100vw;
+//     background-image: url("../../assets/images/basketball.jpg");
+//     background-repeat: no-repeat;
+//     background-size: cover;
+//     position: relative;
+// }
+
+// .hero-soccer {
+//     padding: 0;
+//     display: flex;
+//     align-items: center;
+//     justify-content: start;
+//     width: 100vw;
+//     background-image: url("../../assets/images/basketball.jpg");
+//     background-repeat: no-repeat;
+//     background-size: cover;
+//     position: relative;
+// }
+
+.teams-section{
+    display: flex;
+    flex-direction: column;
+
+    @include tablet{
+        flex-direction: row;
+    }
+}
+
+.hero__header {
+    font-family: "Avenir-Next";
+    font-style: normal;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #323232;
+    /*Adds 8 to the already 16 padding to have 24 padding for section headers*/
+    padding-top: 0.5rem;
+    padding-bottom: 1rem;
+    color: white;
+    z-index: 1;
+    position: relative;
+    left: 1rem;
+
+    @include tablet {
+        font-size: 3rem;
+    }
+}
+
+.hero__header-container {
+    margin: 4rem 0rem;
+
+    @include tablet {
+        margin: 14rem 0rem;
+        // left: 5rem;
+    }
+
+}
+
+
+@media (min-width: 1279px) {
+    .hero__header {
+        // left: 8rem;
+    }
+}
+
+.hero__overlay {
+    background-color: #323232;
+    opacity: 50%;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}
+
+.createPost {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.form {
+    border-radius: 3.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    padding: 2rem;
+    border: 1px solid grey;
+
+    @include tablet{
+        max-height: 15rem;
+    }
+
+
+    &-notes {
+        width: 60%;
+        padding: 0.25rem;
+        border: 0.5px solid black;
+        border-radius: 10px;
+        height: 3.5rem;
+        font-size: 1rem;
+    }
+
+    &-sport-choice {
+        margin: 1rem 0rem;
+        display: flex;
+        gap: 2rem;
+    }
+
+    &__upload {
+        align-self: center;
+        background-image: url("../../assets/icons/login.svg");
+        display: flex;
+        justify-content: center;
+        background-color: #0095FF;
+        background-size: 2.5rem;
+        background-repeat: no-repeat;
+        background-position: 5% 50%;
+        border: none;
+        width: 60%;
+        padding: 0.75rem;
+        border-radius: 10px;
+        color: white;
+        font-weight: 700;
+        font-size: 1.5rem;
+        z-index: 1;
+        position: relative;
+        left: 1rem;
+
+        &:hover {
+            background-color: #235fa0;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        &-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-items: center;
+            background-color: #FFF;
+            text-decoration: none;
+            width: 6rem;
+
+            @include tablet {
+                width: 30%;
+            }
+        }
+
+        &-text {
+            @include mobile-body-copy;
+            color: #1f5690;
+            text-align: center;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+
+
+        &-icon {
+            color: white;
+            width: 3.5rem;
+
+        }
+    }
+
+}
+
+.posts-feed-container {
+    display: flex;
+    flex-direction: row;
+    // flex-wrap: column;
+    justify-content: center;
+    gap: 1rem;
+    padding: 0.5rem 0rem;
+    padding-bottom: 4rem;
+    height: 40rem;
+    overflow: scroll;
+
+    // @include tablet{
+    //     flex-direction: column
+    // }
+}
+
+.notes-label {
+    @include mobile-section-header;
+    font-size: 1.5rem;
+    padding: 0.5rem 0rem;
+    color: #163d66;
+}
+
+.form-button {
+    width: 40%;
+    height: 2rem;
+}
+
+
+
+
+// ------ about section needs to refactor to BEM ---------
+
+.about {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 4rem;
+}
+
+@media (min-width: 769px) {
+    .about {
+        gap: 2rem;
+        padding: 1.5rem;
+        padding-bottom: 8rem;
+    }
+}
+
+.about__header {
+    font-family: "Avenir-Next";
+    font-style: normal;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #323232;
+    /*Adds 8 to the already 16 padding to have 24 padding for section headers*/
+    padding-top: 0.5rem;
+    padding-bottom: 1rem;
+    padding-top: 0.5rem;
+}
+
+@media (min-width: 769px) {
+    .about__header {
+        font-size: 2.5rem;
+    }
+}
+
+.about__image-container {
+    gap: 0.5rem 0rem;
+}
+
+@media (min-width: 769px) {
+    .about__image-container {
+        padding: 0rem 6rem;
+        gap: 2rem;
+    }
+}
+
+.about__image-container-image {
+    width: 100%;
+}
+
+.about__image-container-quote {
+    font-family: "Avenir-Next";
+    font-style: normal;
+    font-size: 0.8rem;
+    line-height: 1.12rem;
+    font-weight: 400;
+    color: #323232;
+    font-weight: 600;
+    letter-spacing: 1px;
+    line-height: 1.5rem;
+}
+
+@media (min-width: 769px) {
+    .about__image-container-quote {
+        font-size: 2rem;
+        line-height: 3rem;
+    }
+}
+
+.about__image-container-quote--teddy-bryan {
+    font-family: "Avenir-Next";
+    font-style: normal;
+    font-size: 0.8rem;
+    line-height: 1.12rem;
+    font-weight: 400;
+    color: #323232;
+    font-weight: 600;
+    letter-spacing: 1px;
+    line-height: 1.5rem;
+}
+
+@media (min-width: 769px) {
+    .about__image-container-quote--teddy-bryan {
+        font-size: 1.55rem;
+        font-weight: 600;
+    }
+}
+
+@media (min-width: 769px) {
+    .about__description {
+        padding: 0rem 5rem;
+    }
+}
+
+@media (min-width: 769px) {
+    .about__description-text-container {
+        display: flex;
+        flex-direction: row;
+        font-size: 2rem;
+        gap: 1rem;
+    }
+}
+
+.about__description-text-container-text {
+    font-family: "Avenir-Next";
+    font-style: normal;
+    font-size: 0.8rem;
+    line-height: 1.12rem;
+    font-weight: 400;
+    color: #323232;
+}
+
+@media (min-width: 769px) {
+    .about__description-text-container-text {
+        font-size: 1.4rem;
+        line-height: 2rem;
+    }
+}
+
+.about__description-subheader {
+    font-family: "Avenir-Next";
+    font-style: normal;
+    font-size: 0.8rem;
+    line-height: 1.12rem;
+    font-weight: 400;
+    color: #323232;
+    color: #000000;
 }

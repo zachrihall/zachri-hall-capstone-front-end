@@ -6,13 +6,9 @@ import Post from '../../components/Post/Post';
 const BASE_URL = "http://" + document.location.hostname + ":8080";
 const profileUrl = `${BASE_URL}/users/profile`;
 
-
-
-class Profile extends Component {
+class UserChats extends Component {
     state = {
-        isLoading: true,
-        userInfo: this.props.userInfo,
-        userPosts: []
+
     };
 
     promisedSetState = (newState) => new Promise(resolve => this.setState(newState, resolve));
@@ -58,34 +54,11 @@ class Profile extends Component {
     }
 
     render() {
-        const { isLoading, userInfo } = this.state;
+        return (
+            <h1>User chats page</h1>
+        );
 
-        if (!isLoading) {
-            return (
-                <>
-                    <h1>Welcome {userInfo.username}!</h1>
-                    <button onClick={() => { this.signOutHandler() }}>Sign Out</button>
-                    <div>
-                        {this.state.userPosts.map((post) => {
-                            return (
-                                <Post
-                                    onViewPostPage={true}
-                                    profile={true}
-                                    chat_id={post.chat_id}
-                                    sport={post.sport}
-                                    notes={post.notes}
-                                    current_user_id={this.state.userInfo.id}
-                                />
-                            );
-                        })}
-
-                    </div>
-                </>
-            );
-        } else {
-            return <h1>Loading...</h1>;
-        }
     }
 }
 
-export default Profile;
+export default UserChats;

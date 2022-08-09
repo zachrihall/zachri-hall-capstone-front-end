@@ -3,6 +3,10 @@ import './Post.scss';
 import axios from 'axios';
 import Chat from '../../pages/Chat/Chat';
 import React from 'react';
+import teamsPic from '../../assets/icons/group.svg';
+
+const defaultImgUrl = "https://e7.pngegg.com/pngimages/753/432/png-clipart-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service.png";
+
 
 const BASE_URL = "http://" + document.location.hostname + ":8080";
 
@@ -38,13 +42,18 @@ function Post(props) {
         );
     } else {
         return (
-            <div>
-                <div className="post" >
-                    <p>Sport: {props.sport}</p>
-                    <p>Notes: {props.notes}</p>
-                    <p>{props.distanceAway > 1 ? (`${props.distanceAway} miles`): (`${props.distanceAway} mile`)} away</p>
-                    <Link className="post-link" to={`/post/${props.chat_id}`}>
-                        <button>View Post</button>
+            <div className='feed'>
+                <div className="feed__post-container" >
+                    <div className='feed__post-container-sport-distance'>
+                        <img alt="group-chat-owner-photo" src={teamsPic} className='feed__post-container-sport-distance-pfp'></img>
+                        <div className='feed__post-container-sport-distance-sport-container'>
+                            <p className='feed__post-container-sport-distance-sport-container-sport'>{props.sport}</p>
+                            <p className='feed__post-container-sport-distance-sport-container-distance'>{props.distanceAway > 1 ? (`${props.distanceAway} miles`) : (`Less than a mile`)} away</p>
+                        </div>
+                    </div>
+                    <p className='feed__post-container-notes'>{props.notes}</p>
+                    <Link className="feed__post-container-link" to={`/post/${props.chat_id}`}>
+                        <button type="submit" className='feed__post-upload'>JOIN TEAM</button>
                     </Link>
                 </div>
             </div>
