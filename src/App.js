@@ -11,9 +11,9 @@ import Home from './pages/Home/Home';
 import Chat from './pages/Chat/Chat';
 import PostDetails from './pages/PostDetails/PostDetails';
 import io from 'socket.io-client';
-import UserChats from './pages/UserChats/UserChats';
 import NavBar from './components/NavBar/NavBar';
 import Teams from './pages/Teams/Teams';
+import TeamChats from './pages/TeamChats/TeamChats';
 // const Socket = io.connect("http://localhost:8080");
 
 // Socket.on("receive_message", (data) => {
@@ -217,7 +217,7 @@ class App extends React.Component {
       return (
         <>
           <Router>
-            <NavBar top="true" />
+            <NavBar top="true" username={this.state.userInfo.username}/>
             <Switch>
               <Route path="/profile" render={(routerProps) => {
                 return (
@@ -251,7 +251,7 @@ class App extends React.Component {
 
               <Route path="/mychats" render={(routerProps) => {
                 return (
-                  <UserChats
+                  <TeamChats
                     routerProps={routerProps}
                     userId={this.state.userInfo.id}
                     userName={this.state.userInfo.username}

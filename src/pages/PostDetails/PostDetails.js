@@ -60,7 +60,7 @@ class PostDetails extends React.Component {
 
 
     async componentDidMount() {
-        const postRes = await axios.get(`${BASE_URL}/posts/chat/${this.postId}`);
+        const postRes = await axios.get(`${BASE_URL}/teams/chat/${this.postId}`);
         this.setState({
             post: postRes.data[0]
         });
@@ -85,13 +85,13 @@ class PostDetails extends React.Component {
             user_id: this.state.userInfo.id
         }
 
-        const createChatRes = await axios.post(BASE_URL + "/chats/add/rel", chatRoomBody);
+        // const createChatRes = await axios.post(BASE_URL + "/chats/add/rel", chatRoomBody);
 
         await this.promisedSetState({
             room: this.state.post.chat_id,
         });
 
-        this.props.routerProps.history.push(`/chat/${this.state.room}`);
+        // this.props.routerProps.history.push(`/chat/${this.state.room}`);
     }
 
 
@@ -103,12 +103,14 @@ class PostDetails extends React.Component {
                         {/* <div className='post'>
                             <p>Sport: {this.state.post.sport}</p>
                             <p>Notes: {this.state.post.notes}</p>
-                        </div>
+                        </div> */}
+
                         <button onClick={() => {
-                            this.addChatToUser()
+                            // this.addChatToUser()
                         }
-                        }>Join Group</button> */}
+                        }>Join Group</button>
                         <Post
+                            key={uid()}
                             joinRoom={this.joinRoom}
                             sendMessage={this.sendMessage}
                             details="true"

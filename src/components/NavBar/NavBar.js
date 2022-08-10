@@ -28,7 +28,11 @@ function NavBar(props) {
             <section className="mobile-top-navbar">
                 <div className='mobile-top-navbar__search-container'>
                     <Link to={"/"} className="mobile-top-navbar__logo">PickUp</Link>
-                    <img className='mobile-top-navbar__search-container-profile-picture' src={profilePic} alt="profile picture" />
+                    <div className='mobile-top-navbar__search-container-profile-picture'>
+                        <img className='mobile-top-navbar__search-container-profile-picture-picture' src={profilePic} alt="profile picture" />
+                        <p className='mobile-top-navbar__search-container-profile-picture-username'>{props.username}</p>
+                    </div>
+
                 </div>
 
             </section>
@@ -39,10 +43,10 @@ function NavBar(props) {
 
                 <section className="mobile-bottom-navbar">
                     <div className='mobile-bottom-navbar__link-container'>
-                        <Link className="mobile-bottom-navbar__upload-wrapper" to={"/profile"}><img className="mobile-bottom-navbar__upload-icon" src={profile}></img><p className='mobile-bottom-navbar__upload-text'>Profile</p></Link>
+                        <Link className="mobile-bottom-navbar__upload-wrapper" to={"/profile"}><img className="mobile-bottom-navbar__upload-icon" src={profile}></img><p className='mobile-bottom-navbar__upload-text'>PROFILE</p></Link>
                         <Link className="mobile-bottom-navbar__upload-wrapper" to={"/"}><img className="mobile-bottom-navbar__upload-icon" src={home}></img><p className='mobile-bottom-navbar__upload-text'>HOME</p></Link>
-                        <Link className="mobile-bottom-navbar__upload-wrapper" to={"/mychats"}><img className="mobile-bottom-navbar__upload-icon" src={inbox}></img><p className='mobile-bottom-navbar__upload-text'>Chats</p></Link>
-                        <Link className="mobile-bottom-navbar__upload-wrapper" to={"/teams"}><img className="mobile-bottom-navbar__upload-icon" src={teamsPic}></img><p className='mobile-bottom-navbar__upload-text'>TEAMS</p></Link>
+                        <Link className="mobile-bottom-navbar__upload-wrapper" to={"/mychats"}><img className="mobile-bottom-navbar__upload-icon" src={inbox}></img><p className='mobile-bottom-navbar__upload-text'>CHATS</p></Link>
+                        <Link className="mobile-bottom-navbar__upload-wrapper" to={"/teams"}><img className="mobile-bottom-navbar__upload-icon" src={teamsPic}></img><p className='mobile-bottom-navbar__upload-text'>EXPLORE</p></Link>
                     </div>
                     <img className='mobile-bottom-navbar__search-container-profile-picture mobile-bottom-navbar__search-container-profile-picture--tablet' src={profilePic} alt="profile picture" />
                 </section>

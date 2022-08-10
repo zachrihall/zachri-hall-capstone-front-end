@@ -32,7 +32,7 @@ class Teams extends React.Component {
             }
         })
 
-        const postRes = await axios.get(`${BASE_URL}/posts`);
+        const postRes = await axios.get(`${BASE_URL}/teams`);
 
         // const userLocRes = await axios.post(`https://www.googleapis.com/geolocation/v1/geolocate?key=${API_KEY}`);
         // const userLoc = userLocRes.data.location;
@@ -108,7 +108,8 @@ class Teams extends React.Component {
             user_id: this.state.userInfo.id,
             geo_latitude: this.geolocation.lat,
             geo_longitude: this.geolocation.lng,
-            chat_id: postAndChatId
+            chat_id: postAndChatId,
+            team_name: e.target.name.value
         }
 
         const chatRoomBody = {
@@ -118,8 +119,8 @@ class Teams extends React.Component {
         }
 
         const addChatEndpoint = BASE_URL + "/chats/add";
-        const addPostEndPoint = BASE_URL + "/posts";
-        const getPostsEndPoint = BASE_URL + "/posts";
+        const addPostEndPoint = BASE_URL + "/teams";
+        const getPostsEndPoint = BASE_URL + "/teams";
 
         const addPostReq = axios.post(addPostEndPoint, post_body);
         const getPostsReq = axios.get(getPostsEndPoint);
@@ -127,7 +128,7 @@ class Teams extends React.Component {
 
         console.log(chatRoomBody)
 
-        axios.all([addPostReq, getPostsReq, addChatReq]).then(
+        axios.all([addPostReq, getPostsReq]).then(
             axios.spread((...responses) => {
                 const getPostResp = responses[1].data;
                 console.log("got responses from axios all")
@@ -148,6 +149,7 @@ class Teams extends React.Component {
                         <div className="createPost">
                             <form onSubmit={(e) => { this.postSubmitHandler(e) }} className="form">
                                 <label className="notes-label" htmlFor="notes">Create a New Team!</label>
+                                <input className="form-notes" type="text" name="name" id="name" placeholder="Enter Team Name..."></input>
                                 <input className="form-notes" type="textarea" name="notes" id="notes" placeholder="Enter your post notes..."></input>
                                 <div className='form-sport-choice'>
                                     <input className="form-sport" id="basketball" name="sport_choice" type="radio" value="basketball"></input>
@@ -190,8 +192,9 @@ class Teams extends React.Component {
                         </div>
                     </div>
                     <div className='posts-feed-container'>
-                        <h2 className="posts-feed-container__title">Find a team: </h2>
                         <div className="posts-feed-container__feed">
+                            <h2 className="posts-feed-container__title">Find a team: </h2>
+
                             {this.state.posts.map((post) => {
                                 if (this.state.userInfo.distance_preference && this.state.userInfo.sports_preference) {
                                     const postLoc = {
@@ -208,6 +211,7 @@ class Teams extends React.Component {
 
                                         return (
                                             <Post
+                                                teamName={post.team_name}
                                                 onViewPostPage={true}
                                                 user_id={post.user_id}
                                                 chat_id={post.chat_id}
@@ -229,6 +233,8 @@ class Teams extends React.Component {
                                     if ((distance <= this.state.userInfo.distance_preference) && (post.sport.toLowerCase() === (sport ? sport : this.state.userInfo.sports_preference.toLowerCase()))) {
                                         return (
                                             <Post
+                                                key={uid()}
+                                                teamName={post.team_name}
                                                 onViewPostPage={true}
                                                 user_id={post.user_id}
                                                 chat_id={post.chat_id}
@@ -254,6 +260,8 @@ class Teams extends React.Component {
                                     if (distance <= this.state.userInfo.distance_preference) {
                                         return (
                                             <Post
+                                                key={uid()}
+                                                teamName={post.team_name}
                                                 onViewPostPage={true}
                                                 user_id={post.user_id}
                                                 chat_id={post.chat_id}
@@ -282,6 +290,8 @@ class Teams extends React.Component {
                                     if (post.sport.toLowerCase() === sport) {
                                         return (
                                             <Post
+                                                key={uid()}
+                                                teamName={post.team_name}
                                                 onViewPostPage={true}
                                                 user_id={post.user_id}
                                                 chat_id={post.chat_id}

@@ -32,6 +32,7 @@
 
         @include tablet {
             // margin-right: 6rem;
+            font-size: 2.5rem;
         }
     }
 
@@ -95,22 +96,39 @@
         }
 
         &-profile-picture {
-            width: 3rem;
-            height: 3rem;
-            border-radius: 50%;
-            object-fit: cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
 
-            // @include tablet {
-            //     display: none;
-            // }
+            &-picture {
+                width: 3rem;
+                height: 3rem;
+                border-radius: 50%;
+                object-fit: cover;
 
-            &--tablet {
-                @include mobile {
-                    display: none;
+                // @include tablet {
+                //     display: none;
+                // }
+
+                &--tablet {
+                    @include mobile {
+                        display: none;
+                    }
+
+                    @include tablet {}
+                }
+            }
+
+            &-username{
+                @include mobile-body-copy;
+                font-size: 1.25rem;
+                @include tablet {
+                    font-size: 2rem;
                 }
 
-                @include tablet {}
             }
+
         }
     }
 
@@ -305,6 +323,7 @@
             display: flex;
             flex-direction: column;
             justify-items: center;
+            align-items: center;
             background-color: #FFF;
             text-decoration: none;
 
@@ -331,7 +350,7 @@
             color: white;
             width: 2.5rem;
 
-            @include tablet{
+            @include tablet {
                 width: 3.5rem;
             }
 
@@ -339,6 +358,3 @@
     }
 
 }
-
-
-

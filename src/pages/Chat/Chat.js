@@ -63,7 +63,7 @@ class Chat extends React.Component {
 
 
     async componentDidMount() {
-        await axios.get(BASE_URL + "/users/profile", {
+        const userInfoRes = await axios.get(BASE_URL + "/users/profile", {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`
             }
@@ -73,7 +73,16 @@ class Chat extends React.Component {
         });
 
         const messagesRes = await axios.get(BASE_URL + `/messages/${this.state.chatId}`);
-        console.log(messagesRes.data);
+        // const userPostsRes = await axios.get(`${BASE_URL}/teams/${user.data[0].id}`);
+
+
+        // const teamName = userPostsRes.map((team) => {
+        //     if(team.chatId === this.state.chatId){
+        //         return(team.team_name);
+        //     }
+        // })
+
+        // console.log("team name: ", teamName, "mesage data: ", messagesRes.data);
 
         this.setState({
             messages: messagesRes.data.reverse()
@@ -107,10 +116,10 @@ class Chat extends React.Component {
         if (this.socket) {
             this.socket.emit("join_room", {
                 userId: userId,
-                room: this.state.chatId
+                room: this.state.chatId,
+                team_name: this.state.team_name
             });
         }
-
     }
 
     leaveChatRoom = () => {
@@ -119,7 +128,7 @@ class Chat extends React.Component {
     }
 
     submitHandler = (e) => {
-        e.preventDefault();
+        // e.preventDefault();
 
         const messageObj = {
             message: e.target.input.value,
@@ -128,6 +137,8 @@ class Chat extends React.Component {
             chatId: this.state.chatId,
             fromSocket: this.socket.id
         }
+
+        e.target.input.value = "";
 
         this.sendMessage(messageObj);
     }
@@ -154,11 +165,10 @@ class Chat extends React.Component {
                         })
                     }
                 </div>
-                <form onSubmit={(e) => { this.submitHandler(e) }}>
-                    <input placeholder='Message...' name="input" />
-                    <button>Send message</button>
-                    <h1>Messages: </h1>
-
+                <form className='chat-form' onSubmit={(e) => { this.submitHandler(e) }}>
+                    <input className='chat-form__input' placeholder='Message...' name="input" />
+                    {/* <button>Send message</button> */}
+                   <button type="submit" className='chat-form__upload'>SEND</button>
                 </form>
 
             </div>

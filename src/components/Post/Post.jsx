@@ -14,11 +14,12 @@ function Post(props) {
     const addChatToUser = () => {
         const chatRoomBody = {
             chat_id: props.chat_id,
-            chat_name: props.notes,
+            chat_name: "front end test chat name",
+            team_name: "front end test team name ",
             user_id: props.current_user_id
         }
 
-        axios.post(BASE_URL + "chats/add", chatRoomBody);
+        // axios.post(BASE_URL + "chats/add/rel", chatRoomBody);
     }
 
     // // const FancyLink = React.forwardRef((props, ref) => (<a ref={ref}>{props.children}</a>))
@@ -26,11 +27,26 @@ function Post(props) {
     //     <Link to={`/chat/${props.chat_id}`} ref={ref}>{props.children}</Link>
     // ));
 
-
-    if (!props.onViewPostPage) {
+    if (props.minimal) {
+        return (
+            <div className='feed'>
+                <div className="feed__post-container" >
+                    <div className='feed__post-container-sport-distance'>
+                        <p>Team: {props.teamName}</p>
+                        <img alt="group-chat-owner-photo" src={teamsPic} className='feed__post-container-sport-distance-pfp'></img>
+                    </div>
+                    <Link className="feed__post-container-link" to={`/chat/${props.chat_id}`}>
+                        <button type="submit" className='feed__post-upload' onClick={() => addChatToUser()}>JOIN ROOM</button>
+                    </Link>
+                </div>
+            </div>
+        );
+    }
+    else if (!props.onViewPostPage) {
         return (
             <div>
                 <div className="post" >
+                    <p>Team: {props.teamName}</p>
                     <p>Sport: {props.sport}</p>
                     <p>Notes: {props.notes}</p>
                     {/* <Link className="post-link" to={`/chat/${props.chat_id}`} render={(routerProps) => { <Chat routerProps={routerProps} /> }}> */}
@@ -40,19 +56,39 @@ function Post(props) {
                 </div>
             </div>
         );
-    } else {
+    }else if(props.profile){
         return (
             <div className='feed'>
                 <div className="feed__post-container" >
                     <div className='feed__post-container-sport-distance'>
                         <img alt="group-chat-owner-photo" src={teamsPic} className='feed__post-container-sport-distance-pfp'></img>
                         <div className='feed__post-container-sport-distance-sport-container'>
-                            <p className='feed__post-container-sport-distance-sport-container-sport'>{props.sport}</p>
+                            <p>Team: {props.teamName}</p>
+                            <p className='feed__post-container-sport-distance-sport-container-sport'>Sport: {props.sport}</p>
+                        </div>
+                    </div>
+                    <p className='feed__post-container-notes'>{props.notes}</p>
+                    <Link className="feed__post-container-link" to={`/chat/${props.chat_id}`}>
+                        <button type="submit" className='feed__post-upload' onClick={() => addChatToUser()}>JOIN TEAM</button>
+                    </Link>
+                </div>
+            </div>
+        );
+    }
+    else {
+        return (
+            <div className='feed'>
+                <div className="feed__post-container" >
+                    <div className='feed__post-container-sport-distance'>
+                        <img alt="group-chat-owner-photo" src={teamsPic} className='feed__post-container-sport-distance-pfp'></img>
+                        <div className='feed__post-container-sport-distance-sport-container'>
+                            <p>Team: {props.teamName}</p>
+                            <p className='feed__post-container-sport-distance-sport-container-sport'>Sport: {props.sport}</p>
                             <p className='feed__post-container-sport-distance-sport-container-distance'>{props.distanceAway > 1 ? (`${props.distanceAway} miles`) : (`Less than a mile`)} away</p>
                         </div>
                     </div>
                     <p className='feed__post-container-notes'>{props.notes}</p>
-                    <Link className="feed__post-container-link" to={`/post/${props.chat_id}`}>
+                    <Link className="feed__post-container-link" to={`/chat/${props.chat_id}`}>
                         <button type="submit" className='feed__post-upload'>JOIN TEAM</button>
                     </Link>
                 </div>

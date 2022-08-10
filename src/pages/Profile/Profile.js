@@ -3,6 +3,7 @@ import axios from "axios";
 import { Component } from "react";
 import { Link } from 'react-router-dom';
 import Post from '../../components/Post/Post';
+import {v4 as uid} from 'uuid';
 
 const BASE_URL = "http://" + document.location.hostname + ":8080";
 const profileUrl = `${BASE_URL}/users/profile`;
@@ -26,7 +27,7 @@ class Profile extends Component {
             }
         })
 
-        const userPostsRes = await axios.get(`${BASE_URL}/posts/${userInfo.data[0].id}`);
+        const userPostsRes = await axios.get(`${BASE_URL}/teams/${userInfo.data[0].id}`);
 
         await this.promisedSetState({
             userInfo: userInfo.data[0],
@@ -93,13 +94,22 @@ class Profile extends Component {
         this.props.routerProps.history.push("/login");
     }
 
+    uploadPicHandler = (e) => {
+        e.preventDefault();
+
+        console.log("Sample file: ", e.target.sampleFile.files[0])
+
+        axios.post(BASE_URL + "/upload", JSON.stringify(e.target.sampleFile));
+
+    }
+
     render() {
         const { isLoading, userInfo } = this.state;
 
         if (!isLoading) {
             return (
                 <>
-                {/* <form onSubmit={(e) => { this.prefSubmitHandler(e) }}>
+                    {/* <form onSubmit={(e) => { this.prefSubmitHandler(e) }}>
                             <label htmlFor='distance'>Enter distance preference: </label>
                             <input name="distance" type="number" min="1" max="30"></input>
 
@@ -118,16 +128,17 @@ class Profile extends Component {
 
                             <button>Submit</button>
                 </form> */}
-                    <h1>Welcome {userInfo.username}!</h1>                 
                     <button onClick={() => { this.signOutHandler() }}>Sign Out</button>
-                    <h2>My Teams: </h2>
-                    
-                    
-                    
+                    <h2 className='profile-title'>My Teams: </h2>
+
+
+
                     <div className='posts-feed-container'>
                         {this.state.userPosts.map((post) => {
                             return (
                                 <Post
+                                    key={uid()}
+                                    teamName={post.team_name}
                                     onViewPostPage={true}
                                     profile={true}
                                     chat_id={post.chat_id}
@@ -137,8 +148,18 @@ class Profile extends Component {
                                 />
                             );
                         })}
-
                     </div>
+
+                    {/* <form 
+                        ref='uploadForm'
+                        id='uploadForm'
+                        // onSubmit={(e) => {this.uploadPicHandler(e)}}
+                        action={(e) => {axios.post("http://localhost:8080" + "/upload", e.target.sampleFile)}}
+                        method='post'
+                        encType="multipart/form-data">
+                        <input type="file" name="sampleFile" />
+                        <input type='submit' value='Upload!' />
+                    </form> */}
                 </>
             );
         } else {

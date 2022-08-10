@@ -36,7 +36,7 @@ class Home extends React.Component {
             }
         })
 
-        const postRes = await axios.get(`${BASE_URL}/posts`);
+        const postRes = await axios.get(`${BASE_URL}/teams`);
 
         // const userLocRes = await axios.post(`https://www.googleapis.com/geolocation/v1/geolocate?key=${API_KEY}`);
         // const userLoc = userLocRes.data.location;
@@ -67,7 +67,7 @@ class Home extends React.Component {
 
     // componentDidUpdate(_prevProps, prevState) {
     //     if (!prevState === this.state) {
-    //         axios.get("http://localhost:8080/posts").then((data) => {
+    //         axios.get("http://localhost:8080/teams").then((data) => {
     //             this.setState({
     //                 posts: data.data
     //             });
@@ -96,8 +96,8 @@ class Home extends React.Component {
         }
 
         const addChatEndpoint = BASE_URL + "/chats/add";
-        const addPostEndPoint = BASE_URL + "/posts";
-        const getPostsEndPoint = BASE_URL + "/posts";
+        const addPostEndPoint = BASE_URL + "/teams";
+        const getPostsEndPoint = BASE_URL + "/teams";
 
         const addPostReq = axios.post(addPostEndPoint, post_body);
         const getPostsReq = axios.get(getPostsEndPoint);
@@ -105,7 +105,7 @@ class Home extends React.Component {
 
         console.log(chatRoomBody)
 
-        axios.all([addPostReq, getPostsReq, addChatReq]).then(
+        axios.all([addPostReq, getPostsReq]).then(
             axios.spread((...responses) => {
                 const getPostResp = responses[1].data;
                 console.log("got responses from axios all")

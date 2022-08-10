@@ -9,12 +9,18 @@
 
     &__title {
         @include mobile-section-header;
+        color: #163d66;
 
         @include tablet {
             font-size: 2rem;
         }
 
     }
+}
+
+.teams-section {
+    display: flex;
+    justify-content: space-evenly;
 }
 
 .form {
@@ -53,7 +59,7 @@
         display: flex;
         justify-content: center;
         background-color: #0095FF;
-        background-size: 2.5rem;
+        background-size: 1.5rem;
         background-repeat: no-repeat;
         background-position: 5% 50%;
         border: none;
@@ -62,10 +68,52 @@
         border-radius: 10px;
         color: white;
         font-weight: 700;
-        font-size: 1.5rem;
+        font-size: 1rem;
         z-index: 1;
         position: relative;
         left: 1rem;
+
+        @include tablet {
+            align-self: center;
+            background-image: url("../../assets/icons/plus.svg");
+            display: flex;
+            justify-content: center;
+            background-color: #0095FF;
+            background-size: 2.5rem;
+            background-repeat: no-repeat;
+            background-position: 5% 50%;
+            border: none;
+            width: 60%;
+            padding: 0.75rem;
+            border-radius: 10px;
+            color: white;
+            font-weight: 700;
+            font-size: 1.5rem;
+            z-index: 1;
+            position: relative;
+            left: 1rem;
+        }
+
+        @include desktop {
+            align-self: center;
+            background-image: url("../../assets/icons/plus.svg");
+            display: flex;
+            justify-content: center;
+            background-color: #0095FF;
+            background-size: 2.5rem;
+            background-repeat: no-repeat;
+            background-position: 5% 50%;
+            border: none;
+            width: 60%;
+            padding: 0.75rem;
+            border-radius: 10px;
+            color: white;
+            font-weight: 700;
+            font-size: 1.5rem;
+            z-index: 1;
+            position: relative;
+            left: 1rem;
+        }
 
         &:hover {
             background-color: #235fa0;
@@ -133,10 +181,7 @@
         }
     }
 
-    &__pref{
-        
-
-    }
+    &__pref {}
 
 }
 
