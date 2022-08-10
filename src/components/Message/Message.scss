@@ -1,0 +1,53 @@
+* {
+    margin: 0rem;
+}
+
+.message {
+    font-weight: bold;
+    width: fit-content;
+    text-align: center;
+    padding: 0.5rem;
+    border-radius: 10px;
+    margin: 0.5rem;
+}
+
+.messages-container{
+    height: 60vh;
+    max-height: 60vh;
+    overflow: scroll;
+}
+
+.message-row {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+
+    &--sent {
+        justify-content: end;
+    }
+
+    &--received {
+        justify-content: start;
+    }
+
+    &__sent-message {
+        background-color: #447bcc;
+
+        &-container {
+            &-message {
+                padding: 0.25rem;
+            }
+        }
+
+    }
+
+    &__received-message {
+        background-color: lightgrey;
+
+        &-container {
+            &-message {
+                padding: 0.25rem;
+            }
+        }
+    }
+}

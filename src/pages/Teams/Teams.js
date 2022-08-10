@@ -5,8 +5,6 @@ import haversine from 'haversine-distance';
 import Post from '../../components/Post/Post';
 import { v4 as uid } from 'uuid';
 
-
-
 const BASE_URL = "http://" + document.location.hostname + ":8080";
 const profileUrl = `${BASE_URL}/users/profile`;
 
@@ -28,7 +26,6 @@ class Teams extends React.Component {
     promisedSetState = (newState) => new Promise(resolve => this.setState(newState, resolve));
 
     async componentDidMount() {
-        console.log("log from home page: ", BASE_URL, document.location.hostname)
         const userInfo = await axios.get(profileUrl, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -39,7 +36,6 @@ class Teams extends React.Component {
 
         // const userLocRes = await axios.post(`https://www.googleapis.com/geolocation/v1/geolocate?key=${API_KEY}`);
         // const userLoc = userLocRes.data.location;
-
         await this.promisedSetState({
             userInfo: userInfo.data[0],
             posts: postRes.data,
@@ -202,19 +198,35 @@ class Teams extends React.Component {
                                         lat: parseFloat(post.geo_latitude),
                                         lng: parseFloat(post.geo_longitude)
                                     }
-                                    let sport;
+
+                                    let sport = null;
+
                                     if (this.state.userInfo.sports_preference.toLowerCase() === "all") {
                                         sport = post.sport.toLowerCase();
+
+                                        const distance = Math.round((haversine(postLoc, this.geolocation)) / 1609.344);
+
+                                        return (
+                                            <Post
+                                                onViewPostPage={true}
+                                                user_id={post.user_id}
+                                                chat_id={post.chat_id}
+                                                sport={post.sport}
+                                                notes={post.notes}
+                                                current_user_id={this.state.userInfo.id}
+                                                distanceAway={distance}
+                                            />
+                                        );
+
+
                                     }
                                     // const userLoc = {
                                     //     lat: 25.7925627,
                                     //     lng: -80.198654
                                     // }
                                     //Logic for only showing posts that are less than or equal miles away from the user
-                                    const distance = Math.round((haversine(postLoc, this.state.geolocation)) / 1609.344);
-                                    if ((distance <= this.state.userInfo.distance_preference) && (post.sport.toLowerCase() === sport ? sport : this.state.userInfo.sports_preference.toLowerCase())) {
-                                        console.log("distance to all posts: ", distance)
-
+                                    let distance = Math.round((haversine(postLoc, this.state.geolocation)) / 1609.344);
+                                    if ((distance <= this.state.userInfo.distance_preference) && (post.sport.toLowerCase() === (sport ? sport : this.state.userInfo.sports_preference.toLowerCase()))) {
                                         return (
                                             <Post
                                                 onViewPostPage={true}
@@ -282,16 +294,16 @@ class Teams extends React.Component {
                                     }
                                 }
                                 else {
-                                    return (
-                                        <Post
-                                            onViewPostPage={true}
-                                            user_id={post.user_id}
-                                            chat_id={post.chat_id}
-                                            sport={post.sport}
-                                            notes={post.notes}
-                                            current_user_id={this.state.userInfo.id}
-                                        />
-                                    );
+                                    // return (
+                                    //     <Post
+                                    //         onViewPostPage={true}
+                                    //         user_id={post.user_id}
+                                    //         chat_id={post.chat_id}
+                                    //         sport={post.sport}
+                                    //         notes={post.notes}
+                                    //         current_user_id={this.state.userInfo.id}
+                                    //     />
+                                    // );
                                 }
                             })}
                         </div>

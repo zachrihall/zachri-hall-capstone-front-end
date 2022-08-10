@@ -1,12 +1,21 @@
+import './Chat.scss';
 import axios from 'axios';
 import React from 'react';
 import io, { connect } from 'socket.io-client';
 import Profile from '../Profile/Profile';
+import Message from '../../components/Message/Message';
 
 
 const BASE_URL = "http://" + document.location.hostname + ":8080";
 
 class Chat extends React.Component {
+    state = {
+        chatId: this.props.routerProps.match.params.id,
+        userId: 0,
+        leftPreviousRoom: '',
+        messages: []
+    }
+
     constructor(...args) {
         super(...args);
 
@@ -17,11 +26,14 @@ class Chat extends React.Component {
         console.log("from app.js --- time to connect socket")
 
         this.socket.on("receive_message", (data) => {
-            const messagesContainer = document.querySelector(".messages-container");
-            const newMessage = document.createElement("p");
-            newMessage.innerText = data;
-            messagesContainer.appendChild(newMessage);
+            // messagesContainer.appendChild(newMessage);
             console.log("received: ", data);
+
+            this.setState({
+                messages: [...this.state.messages, data]
+            });
+
+
             // let newMessage = document.createElement('p');
             // newMessage.innerText = "data";
 
@@ -41,12 +53,7 @@ class Chat extends React.Component {
         })
     }
 
-    state = {
-        chatId: this.props.routerProps.match.params.id,
-        userId: 0,
-        message: '',
-        leftPreviousRoom: ''
-    }
+
 
     promisedSetState = (newState) => {
         new Promise(resolve => this.setState(newState, resolve))
@@ -61,6 +68,7 @@ class Chat extends React.Component {
                 Authorization: `Bearer ${localStorage.getItem("token")}`
             }
         }).then((data) => {
+            console.log(data.data[0].id);
             this.joinChatRoom(data.data[0].id);
         })
 
@@ -73,10 +81,13 @@ class Chat extends React.Component {
 
 
         // await this.leaveChatRoom();
-        
+
         // console.log("user id is: ", this.state.userId);
     }
 
+    // scrollToBottom() {
+    //     element.scrollIntoView(false);
+    //   }
 
     componentDidUpdate(_prevProps, prevState) {
         if (!prevState === this.state) {
@@ -89,45 +100,24 @@ class Chat extends React.Component {
             })
         }
 
-        // this.socket.on("receive_message", (data) => {
-        //     console.log("received: ", data);
-        //     // setMessageReceived(data);
-        //     // console.log("received: ", data.message);
-        //     // this.setState({
-        //     //     message: data
-        //     // })
-        // })
+        // document.querySelector("messages-container").scrollIntoView('false');
+
     }
 
     componentWillUnmount() {
         this.socket.disconnect();
     }
 
-    // connect = () => {
-    //     this.socket.on("connection", () => {
-    //         console.log(this.socket.connection)
-    //     })
-    // }
-
-    // leftRoomListener = () => {
-    //     this.socket.on("left_room", () => {
-    //         this.setState({
-    //             leftPreviousRoom: "success"
-    //         });
-    //     })
-    // }
-
     sendMessage = (messageObj) => {
         this.socket.emit("send_message", messageObj);
     }
 
     joinChatRoom = (userId) => {
-        console.log("+ joining chat room: ", this.state.chatId)
+        console.log("+ joining chat room: ", userId, this.state.chatId)
         if (this.socket) {
             this.socket.emit("join_room", {
                 userId: userId,
-                room: this.state.chatId,
-                
+                room: this.state.chatId
             });
         }
 
@@ -141,11 +131,9 @@ class Chat extends React.Component {
     submitHandler = (e) => {
         e.preventDefault();
 
-        // this.state.joinChatRoom({ userId: this.state.userId, room: this.state.chatId, inRoom: true })
-
         const messageObj = {
             message: e.target.input.value,
-            userId: this.state.userId,
+            userId: this.props.userId,
             chatId: this.state.chatId,
             fromSocket: this.socket.id
         }
@@ -160,13 +148,24 @@ class Chat extends React.Component {
     render() {
         return (
             <div className="App" >
+                <div className="messages-container">{this.state.messages.map((message) => {
+                    if (message.user_id !== this.props.userId) {
+                        return (
+                            <Message message={message.message} />
+                        );
+                    } else {
+                        return (
+                            <Message sent={true} message={message.message} />
+                        );
+                    }
+                })}
+                </div>
                 <form onSubmit={(e) => { this.submitHandler(e) }}>
                     <input placeholder='Message...' name="input" />
                     <button>Send message</button>
                     <h1>Messages: </h1>
-                </form>
-                <div className="messages-container"></div>
 
+                </form>
 
             </div>
         );
