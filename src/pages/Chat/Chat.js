@@ -62,38 +62,28 @@ class Chat extends React.Component {
 
 
 
-    componentDidMount() {
-        axios.get(BASE_URL + "/users/profile", {
+    async componentDidMount() {
+        await axios.get(BASE_URL + "/users/profile", {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`
             }
         }).then((data) => {
             console.log(data.data[0].id);
             this.joinChatRoom(data.data[0].id);
+        });
+
+        const messagesRes = await axios.get(BASE_URL + `/messages/${this.state.chatId}`);
+        console.log(messagesRes.data);
+
+        this.setState({
+            messages: messagesRes.data.reverse()
         })
-
-        // console.log("response data id: ", userInfo.data[0].id);
-
-        // await this.promisedSetState({
-        //     userId: userInfo.data[0].id
-        // })
-
-
-
-        // await this.leaveChatRoom();
-
-        // console.log("user id is: ", this.state.userId);
     }
-
-    // scrollToBottom() {
-    //     element.scrollIntoView(false);
-    //   }
 
     componentDidUpdate(_prevProps, prevState) {
         if (!prevState === this.state) {
             this.leaveChatRoom();
             this.joinChatRoom();
-
 
             this.setState({
                 leftPreviousRoom: true
@@ -134,6 +124,7 @@ class Chat extends React.Component {
         const messageObj = {
             message: e.target.input.value,
             userId: this.props.userId,
+            userName: this.props.userName,
             chatId: this.state.chatId,
             fromSocket: this.socket.id
         }
@@ -148,17 +139,20 @@ class Chat extends React.Component {
     render() {
         return (
             <div className="App" >
-                <div className="messages-container">{this.state.messages.map((message) => {
-                    if (message.user_id !== this.props.userId) {
-                        return (
-                            <Message message={message.message} />
-                        );
-                    } else {
-                        return (
-                            <Message sent={true} message={message.message} />
-                        );
+                <div className="messages-container">
+                    {
+                        this.state.messages.map((message) => {
+                            if (message.user_id !== this.props.userId) {
+                                return (
+                                    <Message username={message.username} message={message.message} />
+                                );
+                            } else {
+                                return (
+                                    <Message sent={true} message={message.message} />
+                                );
+                            }
+                        })
                     }
-                })}
                 </div>
                 <form onSubmit={(e) => { this.submitHandler(e) }}>
                     <input placeholder='Message...' name="input" />

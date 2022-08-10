@@ -244,6 +244,7 @@ class App extends React.Component {
                     // socket={Socket}
                     routerProps={routerProps}
                     userId={this.state.userInfo.id}
+                    userName={this.state.userInfo.username}
                   />
                 );
               }} />
@@ -253,6 +254,7 @@ class App extends React.Component {
                   <UserChats
                     routerProps={routerProps}
                     userId={this.state.userInfo.id}
+                    userName={this.state.userInfo.username}
                   />
                 );
               }} />

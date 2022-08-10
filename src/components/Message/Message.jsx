@@ -16,11 +16,14 @@ function Message(props) {
     } else {
         return (
             <div className='message-row message-row--received'>
-                <div className="message message-row__received-message">
-                    {/* <img className='message-row__received-message-pfp'></img> */}
-                    <div className='message-row__received-message-container'>
-                        <p className='message-row__received-message-container-message'>Received: {props.message}</p>
+                <div className='message-and-name-container'>
+                    <div className="message message-row__received-message">
+                        {/* <img className='message-row__received-message-pfp'></img> */}
+                        <div className='message-row__received-message-container'>
+                            <p className='message-row__received-message-container-message'>Received: {props.message}</p>
+                        </div>
                     </div>
+                    <p className='message-receive-name'>{props.username}</p>
                 </div>
             </div>
         );
