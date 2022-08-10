@@ -30,7 +30,7 @@ class TeamChats extends Component {
             userInfo: userInfo.data[0]
         });
 
-        const userTeams = await axios.get(BASE_URL + `/chat_rooms/${this.state.userInfo.id}`);
+        const userTeams = await axios.get(BASE_URL + `/chats/user/${this.state.userInfo.id}`);
         console.log("user teams: ", userTeams)
 
         this.setState({

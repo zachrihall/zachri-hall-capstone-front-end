@@ -30,7 +30,7 @@ class Profile extends Component {
         const userPostsRes = await axios.get(`${BASE_URL}/teams/${userInfo.data[0].id}`);
 
         await this.promisedSetState({
-            userInfo: userInfo.data[0],
+            userInfo: userInfo,
             userPosts: userPostsRes.data,
             isLoading: false
         });
