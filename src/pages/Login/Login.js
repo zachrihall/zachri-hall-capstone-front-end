@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import './Login.scss';
 
 const BASE_URL = "http://" + document.location.hostname + ":8080";
 const loginUrl = `${BASE_URL}/users/login`;
@@ -29,20 +30,29 @@ function Login(props) {
 
 
     return (
-        <div>
-            <h1>Login</h1>
-            <form onSubmit={handleLogin}>
-                <div className="form-group">
-                    Username: <input type="text" name="username" />
+        <div className='content'>
+            <form className="login-form" onSubmit={handleLogin}>
+                <div className='auth-split'>
+                    <div className="login-form__container login-form__container--username">
+                        <label className="login-form__container-label" htmlFor='username'>Username: </label>
+                        <input className="login-form__container-input login-form__container-input--username" type="text" name="username" />
+                    </div>
+                    <div className="login-form__container login-form__container--password">
+                        <label className="login-form__container-label" htmlFor='password'>Password: </label>
+                        <input className="login-form__container-input login-form__container-input--pasword" type="password" name="password" />
+                    </div>
                 </div>
-                <div className="form-group">
-                    Password: <input type="password" name="password" />
+
+                <div className='auth-split'>
+                    <button id="auth__upload" className='form__upload' type="submit">LOGIN</button>
+                    <Link to="/signup" id="signup" className='login-form__container-link form__upload auth__upload'>Sign Up</Link>
                 </div>
-                <button type="submit" className="btn btn-primary">
-                    Login
-                </button>
+
+
+
+
             </form>
-            <Link to="/signup"><button>Sign Up</button></Link>
+
 
         </div >
     );

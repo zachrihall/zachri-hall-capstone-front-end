@@ -20,11 +20,17 @@
 
 .teams-section {
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: space-evenly;
 }
 
+#cant-find {
+    padding: 3rem 0rem;
+}
+
 .form {
-    border-radius: 3.5rem;
+    border-radius: 10px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -45,11 +51,18 @@
         border-radius: 10px;
         height: 3.5rem;
         font-size: 1rem;
+        margin: 0.25rem;
+
+        &--place {
+            height: 1.5rem;
+            width: 14.5rem;
+        }
     }
 
     &-sport-choice {
         margin: 1rem 0rem;
         display: flex;
+        flex-direction: column;
         gap: 2rem;
     }
 
@@ -69,9 +82,9 @@
         color: white;
         font-weight: 700;
         font-size: 1rem;
-        z-index: 1;
         position: relative;
         left: 1rem;
+        z-index: 0;
 
         @include tablet {
             align-self: center;
@@ -89,9 +102,10 @@
             color: white;
             font-weight: 700;
             font-size: 1.5rem;
-            z-index: 1;
             position: relative;
             left: 1rem;
+            z-index: 0;
+
         }
 
         @include desktop {
@@ -110,9 +124,10 @@
             color: white;
             font-weight: 700;
             font-size: 1.5rem;
-            z-index: 1;
             position: relative;
             left: 1rem;
+            z-index: 0;
+
         }
 
         &:hover {
@@ -154,14 +169,14 @@
 }
 
 .preferences-form {
-    border-radius: 3.5rem;
+    border-radius: 10px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 20rem;
     flex-shrink: 1;
-    padding: 4rem;
+    padding: 1.5rem;
     border: 1px solid grey;
 
     @include tablet {
@@ -191,4 +206,8 @@
     justify-content: center;
     align-items: center;
     gap: 1rem;
+}
+
+#create-new-form{
+    margin-bottom: 7rem;
 }

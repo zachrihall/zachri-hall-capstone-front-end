@@ -186,13 +186,12 @@ class App extends React.Component {
           Authorization: `Bearer ${localStorage.getItem("token")}`
         }
       }).then((res) => {
-        console.log(res.data[0])
+        // console.log(res.data[0])
         this.setState({
           userInfo: res.data[0]
         })
       });
     }
-
   }
 
   componentDidUpdate(_prevProps, prevState) {
@@ -217,7 +216,7 @@ class App extends React.Component {
       return (
         <>
           <Router>
-            <NavBar top="true" username={this.state.userInfo.username}/>
+            <NavBar top="true" username={this.state.userInfo.username} />
             <Switch>
               <Route path="/profile" render={(routerProps) => {
                 return (
@@ -292,7 +291,9 @@ class App extends React.Component {
 
     else {
       return (
-        <Router>
+        <Router>         
+          <NavBar top="true" username={this.state.userInfo.username} />
+
           <Switch>
             <Route path="/login" render={(routerProps) => {
               return (

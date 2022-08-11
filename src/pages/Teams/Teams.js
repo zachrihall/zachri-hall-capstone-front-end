@@ -4,6 +4,8 @@ import axios from "axios";
 import haversine from 'haversine-distance';
 import Post from '../../components/Post/Post';
 import { v4 as uid } from 'uuid';
+import { Autocomplete, LoadScript } from '@react-google-maps/api';
+
 
 const BASE_URL = "http://" + document.location.hostname + ":8080";
 const profileUrl = `${BASE_URL}/users/profile`;
@@ -98,16 +100,19 @@ class Teams extends React.Component {
 
 
     postSubmitHandler = (e) => {
-        // e.preventDefault();
+        e.preventDefault();
 
         const postAndChatId = uid();
+
+        const teamLocLat = this.autocomplete.getPlace().geometry.location.lat();
+        const teamLocLng = this.autocomplete.getPlace().geometry.location.lng();
 
         const post_body = {
             sport: e.target.sport_choice.value,
             notes: e.target.notes.value,
             user_id: this.state.userInfo.id,
-            geo_latitude: this.geolocation.lat,
-            geo_longitude: this.geolocation.lng,
+            geo_latitude: teamLocLat,
+            geo_longitude: teamLocLng,
             chat_id: postAndChatId,
             team_name: e.target.name.value
         }
@@ -126,9 +131,7 @@ class Teams extends React.Component {
         const getPostsReq = axios.get(getPostsEndPoint);
         const addChatReq = axios.post(addChatEndpoint, chatRoomBody);
 
-        console.log(chatRoomBody)
-
-        axios.all([addPostReq, getPostsReq]).then(
+        axios.all([addPostReq, getPostsReq, addChatReq]).then(
             axios.spread((...responses) => {
                 const getPostResp = responses[1].data;
                 console.log("got responses from axios all")
@@ -140,6 +143,20 @@ class Teams extends React.Component {
         )
     }
 
+    onLoad = (autocomplete) => {
+        // console.log('autocomplete: ', autocomplete)
+
+        this.autocomplete = autocomplete
+    }
+
+    onPlaceChanged = () => {
+        if (this.autocomplete !== null) {
+            // console.log(this.autocomplete.getPlace())
+        } else {
+            console.log('Autocomplete is not loaded yet!')
+        }
+    }
+
 
     render() {
         if (!this.state.isLoading) {
@@ -147,32 +164,13 @@ class Teams extends React.Component {
                 <section className="teams-section">
                     <div className='input'>
                         <div className="createPost">
-                            <form onSubmit={(e) => { this.postSubmitHandler(e) }} className="form">
-                                <label className="notes-label" htmlFor="notes">Create a New Team!</label>
-                                <input className="form-notes" type="text" name="name" id="name" placeholder="Enter Team Name..."></input>
-                                <input className="form-notes" type="textarea" name="notes" id="notes" placeholder="Enter your post notes..."></input>
-                                <div className='form-sport-choice'>
-                                    <input className="form-sport" id="basketball" name="sport_choice" type="radio" value="basketball"></input>
-                                    <label htmlFor="basketball">Basketball</label>
-                                    <input className="form-sport" id="Football" name="sport_choice" type="radio" value="Football"></input>
-                                    <label htmlFor="Football">Football</label>
-                                    <input className="form-sport" id="Soccer" name="sport_choice" type="radio" value="Soccer"></input>
-                                    <label htmlFor="Soccer">Soccer</label>
-                                </div>
-                                {/* <section className="navbar">
-                                        <Link className="navbar__upload-wrapper" to={"/upload-page"}><button className='navbar__upload'>UPLOAD</button></Link>
-                                        <img className='navbar__search-container-profile-picture navbar__search-container-profile-picture--tablet' src={profilePic} alt="profile picture" />
-                                    </section> */}
-                                {/* <Link className="form__upload-wrapper" to={"/"}><button type="submite" className='form__upload'>POST</button></Link> */}
-                                <button type="submit" className='form__upload'>CREATE</button>
-                                {/* <button className='form-button'>submit</button> */}
-                            </form>
+
                         </div>
                         <div>
 
                             <form className="preferences-form" onSubmit={(e) => { this.prefSubmitHandler(e) }}>
-                                <h3 className='notes-label preferences-form__pref'>Current Distance Preference: {this.state.userInfo.distance_preference ? this.state.userInfo.distance_preference : "None"}</h3>
-                                <h3 className='notes-label preferences-form__pref'>Current Sport Preference: {this.state.userInfo.sports_preference ? this.state.userInfo.sports_preference : "None"}</h3>
+                                <h3 className='notes-label preferences-form__pref'>Current Distance Preference: {this.state.userInfo.distance_preference ? this.state.userInfo.distance_preference : "None"} Miles</h3>
+                                <h3 className='notes-label preferences-form__pref'>Current Sport Preference: {this.state.userInfo.sports_preference ? this.state.userInfo.sports_preference.toUpperCase() : "None"}</h3>
 
                                 <label htmlFor='distance'>Enter distance preference: </label>
                                 <input name="distance" type="number" min="1" max="30"></input>
@@ -187,7 +185,8 @@ class Teams extends React.Component {
                                     <input className="form-sport" id="all" name="sport_choice" type="radio" value="all"></input>
                                     <label htmlFor="all">All</label>
                                 </div>
-                                <button>Submit</button>
+                                {/* <button>Submit</button> */}
+                                <button className='form__upload'>SUBMIT</button>
                             </form>
                         </div>
                     </div>
@@ -319,6 +318,52 @@ class Teams extends React.Component {
                         </div>
 
                     </div>
+                    <h2 id="cant-find" className='notes-label'>Can't find what you're looking for?</h2> 
+                    <form id="create-new-form" onSubmit={(e) => { this.postSubmitHandler(e) }} className="form">
+                        <label className="notes-label" htmlFor="notes">Create a New Team!</label>
+                        <input className="form-notes" type="text" name="name" id="name" placeholder="Enter Team Name..."></input>
+                        <input className="form-notes" type="textarea" name="notes" id="notes" placeholder="Enter your post notes..."></input>
+
+                        <LoadScript libraries={["places"]} googleMapsApiKey='AIzaSyBp_4LbU532FQe_xpsHGEoVeymH04Jr0nU'>
+                            <Autocomplete
+                                onLoad={this.onLoad}
+                                onPlaceChanged={this.onPlaceChanged}
+                            >
+                                <input
+                                    name='formPlace'
+                                    className='form-notes form-notes--place'
+                                    type="text"
+                                    placeholder="Enter a location below"
+                                    style={{
+                                        textOverflow: `ellipses`
+                                    }}
+                                />
+                            </Autocomplete>
+                        </LoadScript>
+
+
+
+
+                        {/* <input id="autocomplete" placeholder='enter a place' type='text' /> */}
+
+
+                        <div className='form-sport-choice'>
+                            <input className="form-sport" id="basketball" name="sport_choice" type="radio" value="basketball"></input>
+                            <label htmlFor="basketball">Basketball</label>
+                            <input className="form-sport" id="Football" name="sport_choice" type="radio" value="Football"></input>
+                            <label htmlFor="Football">Football</label>
+                            <input className="form-sport" id="Soccer" name="sport_choice" type="radio" value="Soccer"></input>
+                            <label htmlFor="Soccer">Soccer</label>
+                        </div>
+                        {/* <section className="navbar">
+                                        <Link className="navbar__upload-wrapper" to={"/upload-page"}><button className='navbar__upload'>UPLOAD</button></Link>
+                                        <img className='navbar__search-container-profile-picture navbar__search-container-profile-picture--tablet' src={profilePic} alt="profile picture" />
+                                    </section> */}
+                        {/* <Link className="form__upload-wrapper" to={"/"}><button type="submite" className='form__upload'>POST</button></Link> */}
+                        <button type="submit" className='form__upload'>CREATE</button>
+                        {/* <button className='form-button'>submit</button> */}
+                    </form>
+
                 </section>
             );
         } else {

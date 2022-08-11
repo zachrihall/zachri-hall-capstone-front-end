@@ -5,6 +5,7 @@ import home from '../../assets/icons/home.svg';
 import profile from '../../assets/icons/user.svg';
 import inbox from '../../assets/icons/inbox.svg';
 import teamsPic from '../../assets/icons/group.svg';
+import guy from '../../assets/images/pfpguy.png';
 
 
 
@@ -29,7 +30,7 @@ function NavBar(props) {
                 <div className='mobile-top-navbar__search-container'>
                     <Link to={"/"} className="mobile-top-navbar__logo">PickUp</Link>
                     <div className='mobile-top-navbar__search-container-profile-picture'>
-                        <img className='mobile-top-navbar__search-container-profile-picture-picture' src={profilePic} alt="profile picture" />
+                        <img className='mobile-top-navbar__search-container-profile-picture-picture' src={guy} alt="profile picture" />
                         <p className='mobile-top-navbar__search-container-profile-picture-username'>{props.username}</p>
                     </div>
 
