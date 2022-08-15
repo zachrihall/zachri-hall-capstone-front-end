@@ -68,7 +68,7 @@ class Chat extends React.Component {
                 Authorization: `Bearer ${localStorage.getItem("token")}`
             }
         }).then((data) => {
-            console.log(data.data[0].id);
+            console.log(" log from chat on join - ", data);
             this.joinChatRoom(data.data[0].id);
         });
 

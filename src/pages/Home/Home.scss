@@ -215,6 +215,7 @@
     padding-bottom: 4rem;
     height: 40rem;
     overflow: scroll;
+    margin-top: 5rem;
 
     // @include tablet{
     //     flex-direction: column
@@ -362,4 +363,14 @@
     font-weight: 400;
     color: #323232;
     color: #000000;
+}
+
+.important{
+    font-size: 2rem;
+    line-height: 3rem;
+}
+
+.less-important{
+    font-size: 1rem;
+    font-weight: 700;
 }

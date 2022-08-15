@@ -3,7 +3,8 @@ import axios from "axios";
 import { Component } from "react";
 import { Link } from 'react-router-dom';
 import Post from '../../components/Post/Post';
-import {v4 as uid} from 'uuid';
+import { v4 as uid } from 'uuid';
+import { Autocomplete, LoadScript } from '@react-google-maps/api';
 
 const BASE_URL = "http://" + document.location.hostname + ":8080";
 const profileUrl = `${BASE_URL}/users/profile`;
@@ -80,10 +81,8 @@ class Profile extends Component {
     //             console.log("preference response: ", res)
     //         })
 
-    //         alert("Preferences submitted");
 
     //     }else{
-    //         alert("please login");
     //     }
     // }
 
@@ -101,6 +100,64 @@ class Profile extends Component {
 
         axios.post(BASE_URL + "/upload", JSON.stringify(e.target.sampleFile));
 
+    }
+
+    onLoad = (autocomplete) => {
+        // console.log('autocomplete: ', autocomplete)
+
+        this.autocomplete = autocomplete
+    }
+
+    onPlaceChanged = () => {
+        if (this.autocomplete !== null) {
+            // console.log(this.autocomplete.getPlace())
+        } else {
+            console.log('Autocomplete is not loaded yet!')
+        }
+    }
+
+    postSubmitHandler = (e) => {
+        // e.preventDefault();
+
+        const postAndChatId = uid();
+
+        const teamLocLat = this.autocomplete.getPlace().geometry.location.lat();
+        const teamLocLng = this.autocomplete.getPlace().geometry.location.lng();
+
+        const post_body = {
+            sport: e.target.sport_choice.value,
+            notes: e.target.notes.value,
+            user_id: this.state.userInfo.data[0].id,
+            geo_latitude: teamLocLat,
+            geo_longitude: teamLocLng,
+            chat_id: postAndChatId,
+            team_name: e.target.name.value
+        }
+
+        const chatRoomBody = {
+            chat_id: postAndChatId,
+            chat_name: e.target.notes.value,
+            user_id: this.state.userInfo.id
+        }
+
+        const addChatEndpoint = BASE_URL + "/chats/add";
+        const addPostEndPoint = BASE_URL + "/teams";
+        const getPostsEndPoint = BASE_URL + "/teams";
+
+        const addPostReq = axios.post(addPostEndPoint, post_body);
+        const getPostsReq = axios.get(getPostsEndPoint);
+        const addChatReq = axios.post(addChatEndpoint, chatRoomBody);
+
+        axios.all([addPostReq, getPostsReq, addChatReq]).then(
+            axios.spread((...responses) => {
+                const getPostResp = responses[1].data;
+                console.log("got responses from axios all")
+
+                this.setState({
+                    posts: getPostResp
+                });
+            })
+        )
     }
 
     render() {
@@ -128,12 +185,13 @@ class Profile extends Component {
 
                             <button>Submit</button>
                 </form> */}
-                    <button onClick={() => { this.signOutHandler() }}>Sign Out</button>
+                    <button className="form__upload" onClick={() => { this.signOutHandler() }}>Sign Out</button>
+
                     <h2 className='profile-title'>My Teams: </h2>
 
 
 
-                    <div className='posts-feed-container'>
+                    <div id="profile-feed" className='posts-feed-container'>
                         {this.state.userPosts.map((post) => {
                             return (
                                 <Post
@@ -148,6 +206,52 @@ class Profile extends Component {
                                 />
                             );
                         })}
+
+
+                        <form id="create-new-form" onSubmit={(e) => { this.postSubmitHandler(e) }} className="form">
+                            <label className="notes-label" htmlFor="notes">Create a New Team!</label>
+                            <input className="form-notes" type="text" name="name" id="name" placeholder="Enter Team Name..."></input>
+                            <input className="form-notes" type="textarea" name="notes" id="notes" placeholder="Enter your post notes..."></input>
+
+                            <LoadScript libraries={["places"]} googleMapsApiKey='AIzaSyBp_4LbU532FQe_xpsHGEoVeymH04Jr0nU'>
+                                <Autocomplete
+                                    onLoad={this.onLoad}
+                                    onPlaceChanged={this.onPlaceChanged}
+                                >
+                                    <input
+                                        name='formPlace'
+                                        className='form-notes form-notes--place'
+                                        type="text"
+                                        placeholder="Enter a location below"
+                                        style={{
+                                            textOverflow: `ellipses`
+                                        }}
+                                    />
+                                </Autocomplete>
+                            </LoadScript>
+
+
+
+
+                            {/* <input id="autocomplete" placeholder='enter a place' type='text' /> */}
+
+
+                            <div className='form-sport-choice'>
+                                <input className="form-sport" id="basketball" name="sport_choice" type="radio" value="basketball"></input>
+                                <label htmlFor="basketball">Basketball</label>
+                                <input className="form-sport" id="Football" name="sport_choice" type="radio" value="Football"></input>
+                                <label htmlFor="Football">Football</label>
+                                <input className="form-sport" id="Soccer" name="sport_choice" type="radio" value="Soccer"></input>
+                                <label htmlFor="Soccer">Soccer</label>
+                            </div>
+                            {/* <section className="navbar">
+                                        <Link className="navbar__upload-wrapper" to={"/upload-page"}><button className='navbar__upload'>UPLOAD</button></Link>
+                                        <img className='navbar__search-container-profile-picture navbar__search-container-profile-picture--tablet' src={profilePic} alt="profile picture" />
+                                    </section> */}
+                            {/* <Link className="form__upload-wrapper" to={"/"}><button type="submite" className='form__upload'>POST</button></Link> */}
+                            <button type="submit" className='form__upload'>CREATE</button>
+                            {/* <button className='form-button'>submit</button> */}
+                        </form>
                     </div>
 
                     {/* <form 
@@ -160,6 +264,9 @@ class Profile extends Component {
                         <input type="file" name="sampleFile" />
                         <input type='submit' value='Upload!' />
                     </form> */}
+
+
+
                 </>
             );
         } else {

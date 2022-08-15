@@ -140,14 +140,13 @@ class Home extends React.Component {
                             <br></br>
                             <div className="about__description-text-container">
                                 <p className="about__description-text-container-text">
-                                    PickUp is an application designed to connect athletes and allow them to organize pick up games and then strengthen the community after the isolation from the pandemic.
-                                    Many athletes coming out of high school in the past few years who don’t move on to play college sports struggle to make larger groups of friends and teammates to continue doing what they love outside of being in school or a sports club.
-                                    We make a lot of our connections from playing pickup games in person, but with the recent quarantining those pickup games dwindled and so did the amount of connections and networking with fellow athletes.
+                                    <span className='important'>PickUp is an application designed to connect athletes</span> <br></br>It allows them to organize pick up games and then strengthen the community after the isolation from the pandemic.
+
+
+                                    <span className="less-important">Many athletes </span> coming out of high school in the past few years who  don’t move on to play college sports <span className="less-important">struggle to make new teammates</span> to continue doing what they love outside of being in school or a sports club.
                                 </p>
                                 <br></br>
-                                <p className="about__description-text-container-text">PickUp allows athletes to create an account and list their favorite sport. Athletes will then be able to create or join a team  where they can chat and coordinate with their teammates.
-                                    The feed page can also be filtered down to which sport they are searching for to only show results for teams with that sport and or within a certain radius from them.  PickUp will do this by adding geolocation data within a radius to
-                                    protect user privacy and then comparing that with all the other posts in the database to see which posts are within the same general area. </p>
+                                <p className="about__description-text-container-text less-important">PickUp allows athletes to meet new teammates close to them to keep their love for competition and sports going.</p>
                             </div>
                         </div>
                     </section>

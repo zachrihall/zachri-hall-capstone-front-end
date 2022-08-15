@@ -18,6 +18,12 @@
     }
 }
 
+#new-team-link{
+    width: 90%;
+}
+
+
+
 .teams-section {
     display: flex;
     flex-direction: column;
@@ -27,6 +33,7 @@
 
 #cant-find {
     padding: 3rem 0rem;
+    text-align: center;
 }
 
 .form {
@@ -210,4 +217,10 @@
 
 #create-new-form{
     margin-bottom: 7rem;
+}
+
+.teams-create-new-team{
+    margin-bottom: 5rem;
+    width: 90%;
+    font-size: 1rem;
 }

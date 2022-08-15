@@ -32,7 +32,7 @@ function Post(props) {
             <div className='feed'>
                 <div className="feed__post-container" >
                     <div className='feed__post-container-sport-distance'>
-                        <p>Team: {props.teamName}</p>
+                        <p>Team: {props.chat_id.slice(0,5)}</p>
                         <img alt="group-chat-owner-photo" src={teamsPic} className='feed__post-container-sport-distance-pfp'></img>
                     </div>
                     <Link className="feed__post-container-link" to={`/chat/${props.chat_id}`}>

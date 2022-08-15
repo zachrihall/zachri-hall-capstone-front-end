@@ -5,6 +5,7 @@ import haversine from 'haversine-distance';
 import Post from '../../components/Post/Post';
 import { v4 as uid } from 'uuid';
 import { Autocomplete, LoadScript } from '@react-google-maps/api';
+import {Link} from 'react-router-dom'
 
 
 const BASE_URL = "http://" + document.location.hostname + ":8080";
@@ -91,10 +92,8 @@ class Teams extends React.Component {
                     console.log("preference response: ", res)
                 })
 
-            alert("Preferences submitted");
 
         } else {
-            alert("please login");
         }
     }
 
@@ -319,51 +318,7 @@ class Teams extends React.Component {
 
                     </div>
                     <h2 id="cant-find" className='notes-label'>Can't find what you're looking for?</h2> 
-                    <form id="create-new-form" onSubmit={(e) => { this.postSubmitHandler(e) }} className="form">
-                        <label className="notes-label" htmlFor="notes">Create a New Team!</label>
-                        <input className="form-notes" type="text" name="name" id="name" placeholder="Enter Team Name..."></input>
-                        <input className="form-notes" type="textarea" name="notes" id="notes" placeholder="Enter your post notes..."></input>
-
-                        <LoadScript libraries={["places"]} googleMapsApiKey='AIzaSyBp_4LbU532FQe_xpsHGEoVeymH04Jr0nU'>
-                            <Autocomplete
-                                onLoad={this.onLoad}
-                                onPlaceChanged={this.onPlaceChanged}
-                            >
-                                <input
-                                    name='formPlace'
-                                    className='form-notes form-notes--place'
-                                    type="text"
-                                    placeholder="Enter a location below"
-                                    style={{
-                                        textOverflow: `ellipses`
-                                    }}
-                                />
-                            </Autocomplete>
-                        </LoadScript>
-
-
-
-
-                        {/* <input id="autocomplete" placeholder='enter a place' type='text' /> */}
-
-
-                        <div className='form-sport-choice'>
-                            <input className="form-sport" id="basketball" name="sport_choice" type="radio" value="basketball"></input>
-                            <label htmlFor="basketball">Basketball</label>
-                            <input className="form-sport" id="Football" name="sport_choice" type="radio" value="Football"></input>
-                            <label htmlFor="Football">Football</label>
-                            <input className="form-sport" id="Soccer" name="sport_choice" type="radio" value="Soccer"></input>
-                            <label htmlFor="Soccer">Soccer</label>
-                        </div>
-                        {/* <section className="navbar">
-                                        <Link className="navbar__upload-wrapper" to={"/upload-page"}><button className='navbar__upload'>UPLOAD</button></Link>
-                                        <img className='navbar__search-container-profile-picture navbar__search-container-profile-picture--tablet' src={profilePic} alt="profile picture" />
-                                    </section> */}
-                        {/* <Link className="form__upload-wrapper" to={"/"}><button type="submite" className='form__upload'>POST</button></Link> */}
-                        <button type="submit" className='form__upload'>CREATE</button>
-                        {/* <button className='form-button'>submit</button> */}
-                    </form>
-
+                    <Link to="/profile" id="new-team-link" className='hero__link '><button type="submit" className='form__upload teams-create-new-team'>CREATE NEW TEAM</button></Link>
                 </section>
             );
         } else {
