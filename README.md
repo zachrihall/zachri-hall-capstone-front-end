@@ -1,70 +1,40 @@
-# Getting Started with Create React App
+Hello and welcome to PickUp. 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+PickUp is an application designed to connect athletes with other athletes nearby to play more games and increase their network. 
 
-## Available Scripts
+Before beginning the installation please make sure you have a SQL server installed on your device. If you do not you may follow these links to install one: 
 
-In the project directory, you can run:
+Mac: https://dev.mysql.com/doc/refman/8.0/en/macos-installation.html
 
-### `npm start`
+Windows: https://dev.mysql.com/doc/refman/8.0/en/windows-installation.html
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+After installing and setting it up then continue with the PickUp installation instructions. 
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+To get started: first clone the server side repository from this link: 
 
-### `npm test`
+https://github.com/zachrihall/zachri-hall-capstone-back-end
+ 
+Then after opening the folder in VSCode change into the server directory. Once in the server directory install the required dependencies in the terminal with the npm install command: 
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+$npm i 
 
-### `npm run build`
+After the dependencies have been installed now set up the server to communicate with your sql server. In the server directory navigate to the knexfile.js. With the file open change the host, user, and password keys to your appropriate information. 
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+After doing this you can now initialize the server using node: 
+$node server.js
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+The server should now be up and running. Please keep in mind the server needs to be running as well in order for the application to function on the client side. 
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Next you will need to clone the client side  repository from this link: 
 
-### `npm run eject`
+https://github.com/zachrihall/client
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+After cloning the repo and opening it up in VSCode you are going to change into the client directory and install the required dependencies like before: 
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+$npm i 
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Once the dependencies are installed you are next going to start the react application using the npm start command from the terminal: 
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+$npm start 
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Now the application will appear in your browser of choice and you can use it. Please keep in mind that PickUp was designed to be viewed on a mobile screen size no larger than 760 pixels. It is not a fully responsive application. Screen sizes larger than this may cause issues with the display of content and functionality of the app.  
