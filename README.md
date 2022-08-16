@@ -8,7 +8,7 @@ Mac: https://dev.mysql.com/doc/refman/8.0/en/macos-installation.html
 
 Windows: https://dev.mysql.com/doc/refman/8.0/en/windows-installation.html
 
-After installing and setting it up then continue with the PickUp installation instructions. 
+After installing and setting it up, now create a new database for the application. 
 
 To get started: first clone the server side repository from this link: 
 
@@ -18,9 +18,14 @@ Then after opening the folder in VSCode change into the server directory. Once i
 
 $npm i 
 
-After the dependencies have been installed now set up the server to communicate with your sql server. In the server directory navigate to the knexfile.js. With the file open change the host, user, and password keys to your appropriate information. 
+After the dependencies have been installed now set up the server to communicate with your sql server. In the server directory navigate to the knexfile.js. With the file open change the host, user, database name, and password to your appropriate information. 
+
+Next run the migration file to create the tables in the database: 
+
+$ npm run migrate 
 
 After doing this you can now initialize the server using node: 
+
 $node server.js
 
 The server should now be up and running. Please keep in mind the server needs to be running as well in order for the application to function on the client side. 
@@ -38,3 +43,4 @@ Once the dependencies are installed you are next going to start the react applic
 $npm start 
 
 Now the application will appear in your browser of choice and you can use it. Please keep in mind that PickUp was designed to be viewed on a mobile screen size no larger than 760 pixels. It is not a fully responsive application. Screen sizes larger than this may cause issues with the display of content and functionality of the app.  
+
