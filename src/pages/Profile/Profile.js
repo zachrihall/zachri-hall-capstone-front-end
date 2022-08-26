@@ -1,5 +1,6 @@
 import './Profile.scss';
 import axios from "axios";
+// import 'dotenv';
 import { Component } from "react";
 import { Link } from 'react-router-dom';
 import Post from '../../components/Post/Post';
@@ -10,18 +11,19 @@ const BASE_URL = "http://" + document.location.hostname + ":8080";
 const profileUrl = `${BASE_URL}/users/profile`;
 
 
-
 class Profile extends Component {
     state = {
         isLoading: true,
         userInfo: this.props.userInfo,
-        userPosts: []
+        userPosts: [],
+        API_KEY: ''
     };
 
     promisedSetState = (newState) => new Promise(resolve => this.setState(newState, resolve));
 
 
     async componentDidMount() {
+        const api_key_resp = await axios.get(BASE_URL + "/api");
         const userInfo = await axios.get(BASE_URL + "/users/profile", {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -33,7 +35,8 @@ class Profile extends Component {
         await this.promisedSetState({
             userInfo: userInfo,
             userPosts: userPostsRes.data,
-            isLoading: false
+            isLoading: false,
+            API_KEY: api_key_resp
         });
 
     }
@@ -213,7 +216,7 @@ class Profile extends Component {
                             <input className="form-notes" type="text" name="name" id="name" placeholder="Enter Team Name..."></input>
                             <input className="form-notes" type="textarea" name="notes" id="notes" placeholder="Enter your post notes..."></input>
 
-                            <LoadScript libraries={["places"]} googleMapsApiKey='AIzaSyBp_4LbU532FQe_xpsHGEoVeymH04Jr0nU'>
+                            <LoadScript libraries={["places"]} googleMapsApiKey={this.state.API_KEY}>
                                 <Autocomplete
                                     onLoad={this.onLoad}
                                     onPlaceChanged={this.onPlaceChanged}
