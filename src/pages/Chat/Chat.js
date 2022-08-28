@@ -4,9 +4,9 @@ import React from 'react';
 import io, { connect } from 'socket.io-client';
 import Profile from '../Profile/Profile';
 import Message from '../../components/Message/Message';
+import { API_URL as BASE_URL } from '../src/config/index.js';
 
 
-const BASE_URL = "http://" + document.location.hostname + ":8080";
 
 class Chat extends React.Component {
     state = {
