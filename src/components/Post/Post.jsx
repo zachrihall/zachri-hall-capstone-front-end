@@ -5,10 +5,9 @@ import Chat from '../../pages/Chat/Chat';
 import React from 'react';
 import teamsPic from '../../assets/icons/group.svg';
 
+
 const defaultImgUrl = "https://e7.pngegg.com/pngimages/753/432/png-clipart-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service.png";
 
-
-const BASE_URL = "http://" + document.location.hostname + ":8080";
 
 function Post(props) {
     const addChatToUser = () => {

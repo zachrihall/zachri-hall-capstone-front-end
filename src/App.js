@@ -14,6 +14,7 @@ import io from 'socket.io-client';
 import NavBar from './components/NavBar/NavBar';
 import Teams from './pages/Teams/Teams';
 import TeamChats from './pages/TeamChats/TeamChats';
+import { API_URL as BASE_URL } from '../src/config/index.js';
 // const Socket = io.connect("http://localhost:8080");
 
 // Socket.on("receive_message", (data) => {
@@ -35,7 +36,6 @@ import TeamChats from './pages/TeamChats/TeamChats';
 // console.log("from app.js: ", window.location.pathname)
 
 // const BASE_URL = "http://localhost:8080";
-const BASE_URL = "http://" + document.location.hostname + ":8080";
 
 const signupUrl = `${BASE_URL}/users/signup`;
 const loginUrl = `${BASE_URL}/users/login`;

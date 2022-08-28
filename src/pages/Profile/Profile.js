@@ -1,13 +1,12 @@
 import './Profile.scss';
 import axios from "axios";
-// import 'dotenv';
 import { Component } from "react";
-import { Link } from 'react-router-dom';
 import Post from '../../components/Post/Post';
 import { v4 as uid } from 'uuid';
 import { Autocomplete, LoadScript } from '@react-google-maps/api';
+import { API_URL as BASE_URL } from '../../../src/config/index.js';
 
-const BASE_URL = "http://" + document.location.hostname + ":8080";
+
 const profileUrl = `${BASE_URL}/users/profile`;
 
 

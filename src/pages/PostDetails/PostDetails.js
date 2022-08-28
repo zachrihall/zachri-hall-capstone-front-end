@@ -1,12 +1,12 @@
 import axios from "axios";
 import React from "react";
 import { v4 as uid } from 'uuid';
-// import io from 'socket.io-client';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import Post from "../../components/Post/Post";
+import { API_URL as BASE_URL } from '../../../src/config/index.js';
 
-const BASE_URL = "http://" + document.location.hostname + ":8080";
+
 const profileUrl = `${BASE_URL}/users/profile`;
 
 // const socket = io.connect("http://localhost:8080");

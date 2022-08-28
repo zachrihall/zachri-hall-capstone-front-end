@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import './Login.scss';
+import { API_URL as BASE_URL } from '../../../src/config/index.js';
 
-const BASE_URL = "http://" + document.location.hostname + ":8080";
+
 const loginUrl = `${BASE_URL}/users/login`;
 
 

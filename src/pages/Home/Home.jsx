@@ -6,9 +6,10 @@ import Post from '../../components/Post/Post';
 import haversine from 'haversine-distance';
 import { Link } from 'react-router-dom';
 import flagFootball from "../../assets/images/flag-football.jpeg";
+import { API_URL as BASE_URL } from '../src/config/index.js';
+
 
 // const API_KEY = "AIzaSyBp_4LbU532FQe_xpsHGEoVeymH04Jr0nU"
-const BASE_URL = "http://" + document.location.hostname + ":8080";
 const profileUrl = `${BASE_URL}/users/profile`;
 
 

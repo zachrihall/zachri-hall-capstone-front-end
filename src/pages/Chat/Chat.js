@@ -4,8 +4,7 @@ import React from 'react';
 import io, { connect } from 'socket.io-client';
 import Profile from '../Profile/Profile';
 import Message from '../../components/Message/Message';
-import { API_URL as BASE_URL } from '../src/config/index.js';
-
+import { API_URL } from '../src' //ftgbnfbnfhn
 
 
 class Chat extends React.Component {

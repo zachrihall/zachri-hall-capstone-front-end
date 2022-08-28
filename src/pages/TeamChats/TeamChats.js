@@ -3,7 +3,7 @@ import axios from "axios";
 import { Component } from "react";
 import Post from '../../components/Post/Post';
 import {v4 as uid} from 'uuid';
-import { API_URL as BASE_URL } from '../src/config/index.js';
+import { API_URL as BASE_URL } from '../../../src/config/index.js';
 
 const profileUrl = `${BASE_URL}/users/profile`;
 

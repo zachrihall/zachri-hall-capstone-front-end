@@ -4,11 +4,11 @@ import axios from "axios";
 import haversine from 'haversine-distance';
 import Post from '../../components/Post/Post';
 import { v4 as uid } from 'uuid';
-import { Autocomplete, LoadScript } from '@react-google-maps/api';
 import {Link} from 'react-router-dom'
+import { API_URL as BASE_URL } from '../../../src/config/index.js';
 
 
-const BASE_URL = "http://" + document.location.hostname + ":8080";
+
 const profileUrl = `${BASE_URL}/users/profile`;
 
 class Teams extends React.Component {

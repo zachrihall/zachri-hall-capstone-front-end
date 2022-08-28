@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { API_URL as BASE_URL } from '../../../src/config/index.js';
 
-const BASE_URL = "http://" + document.location.hostname + ":8080";
+
 const signupUrl = `${BASE_URL}/users/signup`;
 
 
