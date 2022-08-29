@@ -35,7 +35,7 @@ class Profile extends Component {
             userInfo: userInfo,
             userPosts: userPostsRes.data,
             isLoading: false,
-            API_KEY: api_key_resp
+            API_KEY: api_key_resp.key
         });
 
     }
