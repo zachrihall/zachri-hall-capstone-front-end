@@ -35,7 +35,7 @@ class Profile extends Component {
             userInfo: userInfo,
             userPosts: userPostsRes.data,
             isLoading: false,
-            API_KEY: api_key_resp.key
+            API_KEY: api_key_resp
         });
 
     }
@@ -54,39 +54,6 @@ class Profile extends Component {
             });
         }
     }
-
-    // prefSubmitHandler = (e) => {
-    //     e.preventDefault();
-
-    //     console.log(document.location.pathname, this.state.userInfo.id);
-
-    //     let sportPrefAllCheck = e.target.sport_choice.value;
-    //     let distAllCheck = e.target.distance.value;
-
-    //     if((e.target.sport_choice.value === "all")){
-    //         sportPrefAllCheck = "all";
-    //     }
-
-    //     if(!e.target.distance.value){
-    //         distAllCheck = null;
-    //     }
-
-    //     const prefObj = {
-    //         userId: this.state.userInfo.id,
-    //         sports_preference: sportPrefAllCheck,
-    //         distance_preference: distAllCheck
-    //     }
-
-    //     if (this.state.userInfo.id) {
-    //         axios.post(`${BASE_URL}/users/preferences`, prefObj)
-    //         .then((res) => {
-    //             console.log("preference response: ", res)
-    //         })
-
-
-    //     }else{
-    //     }
-    // }
 
 
 
@@ -215,7 +182,7 @@ class Profile extends Component {
                             <input className="form-notes" type="text" name="name" id="name" placeholder="Enter Team Name..."></input>
                             <input className="form-notes" type="textarea" name="notes" id="notes" placeholder="Enter your post notes..."></input>
 
-                            <LoadScript libraries={["places"]} googleMapsApiKey={this.state.API_KEY}>
+                            <LoadScript libraries={["places"]} googleMapsApiKey={this.state.key}>
                                 <Autocomplete
                                     onLoad={this.onLoad}
                                     onPlaceChanged={this.onPlaceChanged}
