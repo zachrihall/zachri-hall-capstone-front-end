@@ -22,7 +22,7 @@ class Profile extends Component {
 
 
     async componentDidMount() {
-        const api_key_resp = await axios.get(BASE_URL + "/api");
+        const api_key_resp = await axios.get(BASE_URL + "/api_key");
         const userInfo = await axios.get(BASE_URL + "/users/profile", {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`
