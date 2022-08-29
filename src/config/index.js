@@ -1,7 +1,7 @@
-const BASE_URL = "https://" + document.location.hostname;
+const BASE_URL = "https://" + document.location.hostname + ":8080";
 
 export const API_URL =
-    process.env.NODE_ENV === 'production'
+    process.env.REACT_APP_NODE_ENV === 'production'
         ? 'https://zachri-hall-cap-api.herokuapp.com'
         : BASE_URL;
 
