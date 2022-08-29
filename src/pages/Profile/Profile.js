@@ -35,7 +35,7 @@ class Profile extends Component {
             userInfo: userInfo,
             userPosts: userPostsRes.data,
             isLoading: false,
-            API_KEY: api_key_resp
+            API_KEY: api_key_resp.key
         });
 
     }
@@ -182,7 +182,7 @@ class Profile extends Component {
                             <input className="form-notes" type="text" name="name" id="name" placeholder="Enter Team Name..."></input>
                             <input className="form-notes" type="textarea" name="notes" id="notes" placeholder="Enter your post notes..."></input>
 
-                            <LoadScript libraries={["places"]} googleMapsApiKey={this.state.key}>
+                            <LoadScript libraries={["places"]} googleMapsApiKey={this.state.API_KEY}>
                                 <Autocomplete
                                     onLoad={this.onLoad}
                                     onPlaceChanged={this.onPlaceChanged}
