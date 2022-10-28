@@ -20,14 +20,8 @@ class Chat extends React.Component {
 
         this.socket = io.connect(BASE_URL);
 
-        console.log(this.socket.connected);
-
-        console.log("from app.js --- time to connect socket")
-
         this.socket.on("receive_message", (data) => {
             // messagesContainer.appendChild(newMessage);
-            console.log("received: ", data);
-
             this.setState({
                 messages: [...this.state.messages, data]
             });
@@ -67,7 +61,6 @@ class Chat extends React.Component {
                 Authorization: `Bearer ${localStorage.getItem("token")}`
             }
         }).then((data) => {
-            console.log(" log from chat on join - ", data);
             this.joinChatRoom(data.data[0].id);
         });
 
@@ -111,7 +104,6 @@ class Chat extends React.Component {
     }
 
     joinChatRoom = (userId) => {
-        console.log("+ joining chat room: ", userId, this.state.chatId)
         if (this.socket) {
             this.socket.emit("join_room", {
                 userId: userId,
@@ -123,7 +115,6 @@ class Chat extends React.Component {
 
     leaveChatRoom = () => {
         this.socket.emit("leave_room");
-        console.log("- leaving chat room")
     }
 
     submitHandler = (e) => {
