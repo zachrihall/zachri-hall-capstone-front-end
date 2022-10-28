@@ -180,7 +180,6 @@ class App extends React.Component {
 
   componentDidMount() {
     if (localStorage.getItem("token")) {
-      console.log("i mounted")
       axios.get(BASE_URL + "/users/profile", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`

@@ -30,7 +30,6 @@ class Home extends React.Component {
     promisedSetState = (newState) => new Promise(resolve => this.setState(newState, resolve));
 
     async componentDidMount() {
-        console.log("log from home page: ", BASE_URL, document.location.hostname)
         const userInfo = await axios.get(profileUrl, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`
